@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import nz.co.redice.newsfeeder.model.Article;
-import nz.co.redice.newsfeeder.model.Entry;
+import nz.co.redice.newsfeeder.dao.Entry;
 import nz.co.redice.newsfeeder.networking.NewsService;
 import nz.co.redice.newsfeeder.networking.NewsServiceFactory;
 import nz.co.redice.newsfeeder.utils.AppDatabase;
@@ -63,22 +63,20 @@ public class ListViewModel extends AndroidViewModel {
 
 
     public void gimmeSomeAction() {
-        newsService.requestTopHeadlines(country, apiKey).toObservable()
+        mDisposable.add(newsService.requestTopHeadlines(country, apiKey).toObservable()
                 .subscribeOn(Schedulers.io())
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))
                 .map(Article::toEntry)
                 .doOnComplete(this::loadLiveData)
-                .subscribe(s -> db.mEntryDao().insertEntry(s));
-
+                .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
-
     public void loadLiveData() {
-        db.mEntryDao().getAllEntries()
+        mDisposable.add(db.mEntryDao().getAllEntries()
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> updateLifeData(s));
+                .subscribe(s -> updateLifeData(s)));
     }
 
 

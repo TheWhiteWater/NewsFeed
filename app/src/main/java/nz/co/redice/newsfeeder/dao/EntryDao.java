@@ -8,9 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
-import nz.co.redice.newsfeeder.model.Entry;
 
 @Dao
 public interface EntryDao {

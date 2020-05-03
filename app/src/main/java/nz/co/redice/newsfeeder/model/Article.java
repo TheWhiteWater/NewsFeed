@@ -4,6 +4,8 @@ package nz.co.redice.newsfeeder.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import nz.co.redice.newsfeeder.dao.Entry;
+
 public class Article {
 
     @SerializedName("source")

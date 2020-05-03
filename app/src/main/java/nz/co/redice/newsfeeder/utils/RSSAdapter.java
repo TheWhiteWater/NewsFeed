@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nz.co.redice.newsfeeder.model.Entry;
+import nz.co.redice.newsfeeder.dao.Entry;
 
 
 public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
