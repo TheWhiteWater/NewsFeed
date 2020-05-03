@@ -67,12 +67,8 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))
                 .map(Article::toEntry)
-//                .doOnComplete(this::loadLiveData)
+                .doOnComplete(this::loadLiveData)
                 .subscribe(s -> db.mEntryDao().insertEntry(s));
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(s -> updateLifeData(s));
-
-        loadLiveData();
 
     }
 
@@ -82,11 +78,7 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-                    headlines.setValue(s);
-                    error.setValue(false);
-                    loading.setValue(false);
-                });
+                .subscribe(s -> updateLifeData(s));
     }
 
 

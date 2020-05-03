@@ -19,7 +19,7 @@ public interface EntryDao {
     Observable<List<Entry>> getAllEntries();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertEntry(Entry entry);
+    void insertEntry(Entry entry);
 
 
 }
