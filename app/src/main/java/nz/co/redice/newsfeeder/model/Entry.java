@@ -1,6 +1,5 @@
 package nz.co.redice.newsfeeder.model;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,22 +9,24 @@ import java.text.ParsePosition;
 import java.util.Date;
 import java.util.Objects;
 
-public class ShowEntry {
+@Entity
+public class Entry {
 
-    public final String source;
-    public final String author;
-    public final String title;
-    public final String description;
-    public final String url;
+    public String source;
+    public String author;
+    public String title;
+    public String description;
+    public String url;
+    public String urlToImage;
+    private Long publishedAt;
+    public String content;
 
-    public final String urlToImage;
-    private Date publishedAt;
-    public final String content;
-
+    @PrimaryKey(autoGenerate = true)
     public int uuid;
 
-    public ShowEntry(String source, Object author, String title, String description,
-                     String url, String urlToImage, String publishedAt, String content) {
+
+    public Entry(String source, Object author, String title, String description,
+                 String url, String urlToImage, String publishedAt, String content) {
         this.source = source;
         if (author != null) {
             this.author = author.toString();
@@ -34,18 +35,12 @@ public class ShowEntry {
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
-        try {
-            this.publishedAt = ISO8601Utils.parse(publishedAt, new ParsePosition(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.publishedAt = convertToLong(publishedAt);
         this.content = content;
     }
 
-    public String getPublishedAgo() {
-        return getTimeAgo(publishedAt.getTime());
+    public Entry() {
     }
-
 
     public static String getTimeAgo(long time) {
         final int SECOND_MILLIS = 1000;
@@ -82,25 +77,47 @@ public class ShowEntry {
         }
     }
 
-    public Date getPublishedAt() {
+
+    public Long getPublishedAt() {
         return publishedAt;
     }
 
+    public Long convertToLong(String publishedAt) {
+        Date instant = new Date();
+        try {
+            instant = ISO8601Utils.parse(publishedAt, new ParsePosition(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return instant.getTime();
+    }
+
+    public String getPublishedAgo() {
+        return getTimeAgo(publishedAt);
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = convertToLong(publishedAt);
+    }
+
+    public void setPublishedAt(Long publishedAt) {
+        this.publishedAt = publishedAt;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShowEntry showEntry = (ShowEntry) o;
-        return uuid == showEntry.uuid &&
-                source.equals(showEntry.source) &&
-                author.equals(showEntry.author) &&
-                title.equals(showEntry.title) &&
-                description.equals(showEntry.description) &&
-                url.equals(showEntry.url) &&
-                urlToImage.equals(showEntry.urlToImage) &&
-                publishedAt.equals(showEntry.publishedAt) &&
-                content.equals(showEntry.content);
+        Entry entry = (Entry) o;
+        return uuid == entry.uuid &&
+                source.equals(entry.source) &&
+                author.equals(entry.author) &&
+                title.equals(entry.title) &&
+                description.equals(entry.description) &&
+                url.equals(entry.url) &&
+                urlToImage.equals(entry.urlToImage) &&
+                publishedAt.equals(entry.publishedAt) &&
+                content.equals(entry.content);
     }
 
     @Override

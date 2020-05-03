@@ -109,4 +109,16 @@ public class Article {
         this.content = content;
     }
 
+
+    public Entry toEntry() {
+        return new Entry(
+                this.getSource().getName(),
+                this.getAuthor(),
+                this.getTitle(),
+                this.getDescription(),
+                this.getUrl(),
+                this.getUrlToImage(),
+                this.getPublishedAt(),
+                this.getContent());
+    }
 }

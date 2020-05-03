@@ -2,8 +2,6 @@ package nz.co.redice.newsfeeder.utils;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,12 +10,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nz.co.redice.newsfeeder.model.ShowEntry;
+import nz.co.redice.newsfeeder.model.Entry;
 
 
 public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
 
-    private List<ShowEntry> showList = new ArrayList<>();
+    private List<Entry> showList = new ArrayList<>();
 
 
     @NonNull
@@ -37,7 +35,7 @@ public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
         holder.bind(showList.get(position));
     }
 
-    public void updateShowList(ShowEntry entry) {
+    public void updateShowList(Entry entry) {
         add(entry);
         sortByDate();
     }
@@ -46,8 +44,8 @@ public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
         showList.clear();
     }
 
-    private void add(ShowEntry update) {
-        for (ShowEntry stock : showList) {
+    private void add(Entry update) {
+        for (Entry stock : showList) {
             if (stock.equals(update)) {
                 return;
             }
@@ -83,7 +81,7 @@ public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
 
         }
 
-        public void bind(ShowEntry entry) {
+        public void bind(Entry entry) {
             mBinding.setEntry(entry);
         }
     }

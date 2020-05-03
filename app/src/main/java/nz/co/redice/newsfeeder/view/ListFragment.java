@@ -56,7 +56,8 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        viewModel.loadTopHeaders();
+        viewModel.gimmeSomeAction();
+
         viewModel.getHeadlines().observe(getViewLifecycleOwner(), showEntry -> {
             mRSSAdapter.updateShowList(showEntry);
         });

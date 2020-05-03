@@ -15,7 +15,6 @@ public class GlideBuilder extends AppGlideModule {
 //        cpd.setCenterRadius(50f);
 //        cpd.start();
 //        return cpd;
-    
 //    }
 
     @BindingAdapter("android:imageUrl")

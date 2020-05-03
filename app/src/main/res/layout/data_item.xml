@@ -4,7 +4,7 @@
     <data>
         <variable
             name="entry"
-            type="nz.co.redice.newsfeeder.model.ShowEntry" />
+            type="nz.co.redice.newsfeeder.model.Entry" />
     </data>
 
 
