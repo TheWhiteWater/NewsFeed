@@ -63,8 +63,6 @@ public class ListViewModel extends AndroidViewModel {
 
 
     public void gimmeSomeAction() {
-
-        final Disposable downloadedHeadlines =
                 newsService.requestTopHeadlines(country, apiKey).toObservable()
                         .subscribeOn(Schedulers.io())
                         .flatMap(s -> Observable.fromIterable(s.getArticles()))
