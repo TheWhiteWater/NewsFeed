@@ -1,6 +1,11 @@
 package nz.co.redice.newsfeeder.view;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
 import nz.co.redice.newsfeeder.utils.RSSAdapter;
@@ -56,11 +55,14 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(ListViewModel.class);
+
         viewModel.gimmeSomeAction();
-        viewModel.updateLiveData();
+//        viewModel.updateLiveData();
 
         viewModel.getHeadlines().observe(getViewLifecycleOwner(), showEntry -> {
             mRSSAdapter.updateShowList(showEntry);
+            mErrorTextView.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
         });
         viewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
             mProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
@@ -69,14 +71,12 @@ public class ListFragment extends Fragment {
         });
         viewModel.getError().observe(getViewLifecycleOwner(),
                 error -> mErrorTextView.setVisibility(error ? View.VISIBLE : View.GONE));
-
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         mBinding = null;
     }
 }

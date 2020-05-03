@@ -63,18 +63,25 @@ public class ListViewModel extends AndroidViewModel {
 
 
     public void gimmeSomeAction() {
-                newsService.requestTopHeadlines(country, apiKey).toObservable()
-                        .subscribeOn(Schedulers.io())
-                        .flatMap(s -> Observable.fromIterable(s.getArticles()))
-                        .map(Article::toEntry)
-                        .subscribe(s -> db.mEntryDao().insertEntry(s));
+        newsService.requestTopHeadlines(country, apiKey).toObservable()
+                .subscribeOn(Schedulers.io())
+                .flatMap(s -> Observable.fromIterable(s.getArticles()))
+                .map(Article::toEntry)
+//                .doOnComplete(this::loadLiveData)
+                .subscribe(s -> db.mEntryDao().insertEntry(s));
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(s -> updateLifeData(s));
+
+        loadLiveData();
+
     }
 
 
-    public void updateLiveData() {
+    public void loadLiveData() {
         db.mEntryDao().getAllEntries()
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     headlines.setValue(s);
                     error.setValue(false);
@@ -82,6 +89,12 @@ public class ListViewModel extends AndroidViewModel {
                 });
     }
 
+
+    void updateLifeData(Entry s) {
+        headlines.setValue(s);
+        error.setValue(false);
+        loading.setValue(false);
+    }
 
     @Override
     protected void onCleared() {
