@@ -7,23 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import nz.co.redice.newsfeeder.model.Article;
 import nz.co.redice.newsfeeder.model.Entry;
-import nz.co.redice.newsfeeder.model.Headlines;
 import nz.co.redice.newsfeeder.networking.NewsService;
 import nz.co.redice.newsfeeder.networking.NewsServiceFactory;
 import nz.co.redice.newsfeeder.utils.AppDatabase;
@@ -74,34 +64,24 @@ public class ListViewModel extends AndroidViewModel {
 
     public void gimmeSomeAction() {
 
-        final Observable<Headlines> downloadedHeadlines =
-                newsService.requestTopHeadlines(country, apiKey).toObservable();
-
-
-        final Observable<Entry> convertedEntries = downloadedHeadlines
-                .subscribeOn(Schedulers.io())
-                .flatMap(s -> Observable.fromIterable(s.getArticles()))
-                .map(Article::toEntry);
-
-         mDisposable.add(convertedEntries
-                 .subscribeOn(Schedulers.io())
-                 .doOnComplete(this::loadDataFromDatabase)
-                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
-    }
-
-
-    void loadDataFromDatabase() {
-                db.mEntryDao().getAllEntries()
+        final Disposable downloadedHeadlines =
+                newsService.requestTopHeadlines(country, apiKey).toObservable()
                         .subscribeOn(Schedulers.io())
-                        .flatMap(Observable::fromIterable)
-                        .subscribe(this::updateLiveData);
+                        .flatMap(s -> Observable.fromIterable(s.getArticles()))
+                        .map(Article::toEntry)
+                        .subscribe(s -> db.mEntryDao().insertEntry(s));
     }
 
 
-    private void updateLiveData(Entry item) {
-        headlines.setValue(item);
-        error.setValue(false);
-        loading.setValue(false);
+    public void updateLiveData() {
+        db.mEntryDao().getAllEntries()
+                .observeOn(Schedulers.io())
+                .flatMap(Observable::fromIterable)
+                .subscribe(s -> {
+                    headlines.setValue(s);
+                    error.setValue(false);
+                    loading.setValue(false);
+                });
     }
 
 
