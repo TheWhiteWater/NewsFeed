@@ -3,11 +3,9 @@ package nz.co.redice.newsfeeder.dao;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
-
-import java.text.ParsePosition;
-import java.util.Date;
 import java.util.Objects;
+
+import nz.co.redice.newsfeeder.utils.EntryFormat;
 
 @Entity
 public class Entry {
@@ -35,70 +33,24 @@ public class Entry {
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
-        this.publishedAt = convertToLong(publishedAt);
+        this.publishedAt = EntryFormat.convertStringToLong(publishedAt);
         this.content = content;
     }
 
     public Entry() {
     }
 
-    public static String getTimeAgo(long time) {
-        final int SECOND_MILLIS = 1000;
-        final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-        final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-        final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
-
-        long now = System.currentTimeMillis();
-        if (time > now || time <= 0) {
-            return null;
-        }
-
-        // TODO: localize
-        final long diff = now - time;
-        if (diff < MINUTE_MILLIS) {
-            return "just now";
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            return "a minute ago";
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            return diff / MINUTE_MILLIS + " minutes ago";
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            return "an hour ago";
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
-        } else {
-            return diff / DAY_MILLIS + " days ago";
-        }
-    }
-
-
     public Long getPublishedAt() {
         return publishedAt;
     }
 
-    public Long convertToLong(String publishedAt) {
-        Date instant = new Date();
-        try {
-            instant = ISO8601Utils.parse(publishedAt, new ParsePosition(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return instant.getTime();
-    }
-
     public String getPublishedAgo() {
-        return getTimeAgo(publishedAt);
+        return EntryFormat.getTimeAgo(publishedAt);
     }
 
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = convertToLong(publishedAt);
-    }
+//    public void setPublishedAt(String publishedAt) {
+//        this.publishedAt = EntryFormat.convertStringToLong(publishedAt);
+//    }
 
     public void setPublishedAt(Long publishedAt) {
         this.publishedAt = publishedAt;
@@ -110,14 +62,14 @@ public class Entry {
         if (o == null || getClass() != o.getClass()) return false;
         Entry entry = (Entry) o;
         return uuid == entry.uuid &&
-                source.equals(entry.source) &&
-                author.equals(entry.author) &&
-                title.equals(entry.title) &&
-                description.equals(entry.description) &&
-                url.equals(entry.url) &&
-                urlToImage.equals(entry.urlToImage) &&
-                publishedAt.equals(entry.publishedAt) &&
-                content.equals(entry.content);
+                Objects.equals(source, entry.source) &&
+                Objects.equals(author, entry.author) &&
+                Objects.equals(title, entry.title) &&
+                Objects.equals(description, entry.description) &&
+                Objects.equals(url, entry.url) &&
+                Objects.equals(urlToImage, entry.urlToImage) &&
+                Objects.equals(publishedAt, entry.publishedAt) &&
+                Objects.equals(content, entry.content);
     }
 
     @Override

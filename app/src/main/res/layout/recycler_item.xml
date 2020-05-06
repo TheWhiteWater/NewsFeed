@@ -5,6 +5,9 @@
         <variable
             name="entry"
             type="nz.co.redice.newsfeeder.dao.Entry" />
+        <variable
+            name="fragment"
+            type="nz.co.redice.newsfeeder.view.ListFragment" />
     </data>
 
 
@@ -12,6 +15,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/item_container"
+    android:onClick="@{()->fragment.onRecyclerItemClick(entry.uuid)}"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="6dp"
@@ -43,7 +48,7 @@
 
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/entry_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"

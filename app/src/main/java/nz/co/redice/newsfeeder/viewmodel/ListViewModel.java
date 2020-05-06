@@ -7,31 +7,32 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import nz.co.redice.newsfeeder.model.Article;
 import nz.co.redice.newsfeeder.dao.Entry;
+import nz.co.redice.newsfeeder.model.Article;
 import nz.co.redice.newsfeeder.networking.NewsService;
-import nz.co.redice.newsfeeder.networking.NewsServiceFactory;
+import nz.co.redice.newsfeeder.networking.RetrofitFactory;
 import nz.co.redice.newsfeeder.utils.AppDatabase;
+import nz.co.redice.newsfeeder.utils.pager.Category;
 
 
 public class ListViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Entry> headlines = new MutableLiveData<>();
+    private Category mCategory;
+    private MutableLiveData<Entry> entry = new MutableLiveData<>();
     private MutableLiveData<Boolean> error = new MutableLiveData<>();
     private MutableLiveData<Boolean> loading = new MutableLiveData<>();
+
+
     private AppDatabase db = Room.databaseBuilder(getApplication(),
-            AppDatabase.class, "headlines").build();
+            AppDatabase.class, "news_api.db").build();
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
-
-    private Disposable disposableSearch;
-    private Disposable disposableTopHeaders;
-    NewsService newsService = NewsServiceFactory.create();
+    private NewsService newsService = RetrofitFactory.create();
     private String country = "nz";
     private String apiKey = "dd08d6df03c34eaeb649bdbf5dcfd6f7";
 
@@ -39,8 +40,8 @@ public class ListViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public MutableLiveData<Entry> getHeadlines() {
-        return headlines;
+    public MutableLiveData<Entry> getEntry() {
+        return entry;
     }
 
     public MutableLiveData<Boolean> getError() {
@@ -52,38 +53,77 @@ public class ListViewModel extends AndroidViewModel {
     }
 
     private void searchFor(String keyWord) {
-        disposableSearch = newsService.requestAllHeadlines(keyWord, apiKey)
+        mDisposable.add(newsService.requestAllHeadlines(keyWord, apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toObservable()
                 .map(h -> h.getArticles())
                 .flatMap(s -> Observable.fromIterable(s))
-                .subscribe(s -> s.toEntry());
+                .subscribe(s -> s.toEntry()));
     }
 
 
-    public void gimmeSomeAction() {
-        mDisposable.add(newsService.requestTopHeadlines(country, apiKey).toObservable()
+    public void gimmeSomeNews() {
+        // TODO: 5/4/2020   time intervals for ui update if idle
+        // TODO: 5/4/2020   time scope for database cleaning
+        clearDatabase();
+
+        switch (mCategory) {
+            case TOPS_HEADLINES: default:
+                getTopNews(); break;
+            case HEALTH:
+                break;
+            case SPORTS:
+                break;
+            case SCIENCE:
+                break;
+            case BUSINESS:
+                break;
+            case TECHNOLOGY:
+                break;
+            case ENTERTAINMENT:
+                break;
+        }
+    }
+
+
+    private void getTopNews() {
+        mDisposable.add(newsService.requestTopHeadlines(country, apiKey)
                 .subscribeOn(Schedulers.io())
+                .toObservable()
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))
                 .map(Article::toEntry)
-                .doOnComplete(this::loadLiveData)
+                .doOnComplete(this::loadFromDatabase)
                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
-    public void loadLiveData() {
-        mDisposable.add(db.mEntryDao().getAllEntries()
+
+    public void loadFromDatabase() {
+
+        // TODO: 5/6/2020 intervals
+//        Observable.interval(0, 5, TimeUnit.MINUTES)
+//                .debounce(2, TimeUnit.SECONDS)
+//                .subscribe(i -> this.loadFromDatabase());
+
+
+        mDisposable.add((db.mEntryDao().getAllEntries())
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> updateLifeData(s)));
+                .subscribe(s -> setLifeData(s)));
     }
 
 
-    void updateLifeData(Entry s) {
-        headlines.setValue(s);
+    private void setLifeData(Entry s) {
+        entry.setValue(s);
         error.setValue(false);
         loading.setValue(false);
+    }
+
+    private void clearDatabase() {
+        mDisposable.add(Completable.fromAction(db.mEntryDao()::deleteAllEntries)
+                .subscribeOn(Schedulers.io())
+                .subscribe());
     }
 
     @Override
@@ -92,4 +132,7 @@ public class ListViewModel extends AndroidViewModel {
         mDisposable.dispose();
     }
 
+    public void setCategory(Category category) {
+        mCategory = category;
+    }
 }

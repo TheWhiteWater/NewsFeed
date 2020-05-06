@@ -11,47 +11,35 @@ import java.util.Collections;
 import java.util.List;
 
 import nz.co.redice.newsfeeder.dao.Entry;
+import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
+import nz.co.redice.newsfeeder.view.ListFragment;
 
 
-public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
+    private final ListFragment mFragment;
     private List<Entry> showList = new ArrayList<>();
 
+    public RecyclerAdapter(ListFragment fragment) {
+        mFragment = fragment;
+    }
 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        nz.co.redice.newsfeeder.databinding.DataItemBinding holderBinding = nz.co.redice.newsfeeder.databinding.DataItemBinding.inflate(inflater, parent, false);
+        RecyclerItemBinding holderBinding = RecyclerItemBinding.inflate(inflater, parent, false);
         return new Holder(holderBinding);
-
-//        View view = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.data_item, parent, false);
-//        return new Holder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(showList.get(position));
+        holder.bind(showList.get(position), mFragment);
     }
 
     public void updateShowList(Entry entry) {
         add(entry);
         sortByDate();
-    }
-
-    public void clearShowList() {
-        showList.clear();
-    }
-
-    private void add(Entry update) {
-        for (Entry stock : showList) {
-            if (stock.equals(update)) {
-                return;
-            }
-        }
-        this.showList.add(update);
-        notifyItemInserted(showList.size() - 1);
     }
 
     private void sortByDate() {
@@ -64,25 +52,39 @@ public class RSSAdapter extends RecyclerView.Adapter<RSSAdapter.Holder> {
         notifyDataSetChanged();
     }
 
+    private void add(Entry newItem) {
+
+        for (Entry stockItem : showList) {
+            if (stockItem.equals(newItem)) {
+                return;
+            }
+        }
+        this.showList.add(newItem);
+        notifyItemInserted(showList.size() - 1);
+    }
 
     @Override
     public int getItemCount() {
         return showList.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder {
+    public static class Holder extends RecyclerView.ViewHolder  {
 
 
-        private nz.co.redice.newsfeeder.databinding.DataItemBinding mBinding;
+        private RecyclerItemBinding mBinding;
 
-        public Holder(nz.co.redice.newsfeeder.databinding.DataItemBinding binding) {
+        public Holder(RecyclerItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
-
         }
 
-        public void bind(Entry entry) {
+        public void bind(Entry entry, ListFragment fragment) {
             mBinding.setEntry(entry);
+            mBinding.setFragment(fragment);
         }
+
+
     }
+
+
 }

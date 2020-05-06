@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.module.AppGlideModule;
 
+
 public class GlideBuilder extends AppGlideModule {
 
 //    public static CircularProgressDrawable getProgress(Context context) {
