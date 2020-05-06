@@ -1,6 +1,7 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -22,7 +23,6 @@ import nz.co.redice.newsfeeder.utils.pager.Category;
 
 public class ListViewModel extends AndroidViewModel {
 
-    private Category mCategory;
     private MutableLiveData<Entry> entry = new MutableLiveData<>();
     private MutableLiveData<Boolean> error = new MutableLiveData<>();
     private MutableLiveData<Boolean> loading = new MutableLiveData<>();
@@ -63,12 +63,12 @@ public class ListViewModel extends AndroidViewModel {
     }
 
 
-    public void gimmeSomeNews() {
+    public void gimmeSomeNews(Category category) {
         // TODO: 5/4/2020   time intervals for ui update if idle
         // TODO: 5/4/2020   time scope for database cleaning
         clearDatabase();
 
-        switch (mCategory) {
+        switch (category) {
             case TOPS_HEADLINES:
             default:
                 getTopNews();
@@ -152,7 +152,4 @@ public class ListViewModel extends AndroidViewModel {
         mDisposable.dispose();
     }
 
-    public void setCategory(Category category) {
-        mCategory = category;
-    }
 }

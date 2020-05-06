@@ -40,7 +40,6 @@ public class ListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        mViewModel.setCategory(mCategory);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel.gimmeSomeNews();
+        mViewModel.gimmeSomeNews(mCategory);
         mViewModel.loadFromDatabase();
 
         mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {

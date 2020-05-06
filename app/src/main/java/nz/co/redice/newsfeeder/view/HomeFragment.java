@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Arrays;
+import java.util.List;
 
 import nz.co.redice.newsfeeder.databinding.FragmentHomeBinding;
 import nz.co.redice.newsfeeder.utils.pager.Category;
@@ -20,7 +25,17 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding mBinding;
     private PagerAdapter mPagerAdapter;
+    private ViewPager2 mViewPager;
 
+
+    List<Category> mTabs = Arrays.asList(
+            Category.TOPS_HEADLINES,
+            Category.BUSINESS,
+            Category.ENTERTAINMENT,
+            Category.HEALTH,
+            Category.SCIENCE,
+            Category.SPORTS,
+            Category.TECHNOLOGY);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,19 +48,15 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mPagerAdapter = new PagerAdapter(getChildFragmentManager());
-        mBinding.viewpager.setAdapter(mPagerAdapter);
-        mBinding.tablayout.setupWithViewPager(mBinding.viewpager);
+        mPagerAdapter = new PagerAdapter(this, mTabs);
+        mViewPager = mBinding.viewpager;
+        mViewPager.setAdapter(mPagerAdapter);
 
-        mPagerAdapter.setTabs(Arrays.asList(
-                Category.TOPS_HEADLINES,
-                Category.BUSINESS,
-                Category.ENTERTAINMENT,
-                Category.HEALTH,
-                Category.SCIENCE,
-                Category.SPORTS,
-                Category.TECHNOLOGY
-        ));
+        TabLayout tabLayout = mBinding.tablayout;
+        new TabLayoutMediator(tabLayout, mViewPager,
+                ((tab, position) -> tab.setText(mTabs.get(position).toString()))).attach();
+
+
     }
 
     @Override
