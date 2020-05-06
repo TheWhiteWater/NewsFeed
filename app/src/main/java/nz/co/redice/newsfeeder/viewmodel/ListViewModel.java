@@ -53,7 +53,7 @@ public class ListViewModel extends AndroidViewModel {
     }
 
     private void searchFor(String keyWord) {
-        mDisposable.add(newsService.requestAllHeadlines(keyWord, apiKey)
+        mDisposable.add(newsService.search(keyWord, apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toObservable()
@@ -69,26 +69,46 @@ public class ListViewModel extends AndroidViewModel {
         clearDatabase();
 
         switch (mCategory) {
-            case TOPS_HEADLINES: default:
-                getTopNews(); break;
+            case TOPS_HEADLINES:
+            default:
+                getTopNews();
+                break;
             case HEALTH:
+                getCategory("health");
                 break;
             case SPORTS:
+                getCategory("sports");
                 break;
             case SCIENCE:
+                getCategory("science");
                 break;
             case BUSINESS:
+                getCategory("business");
                 break;
             case TECHNOLOGY:
+                getCategory("technology");
                 break;
             case ENTERTAINMENT:
+                getCategory("entertainment");
                 break;
         }
-    }
 
+
+    }
 
     private void getTopNews() {
         mDisposable.add(newsService.requestTopHeadlines(country, apiKey)
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .flatMap(s -> Observable.fromIterable(s.getArticles()))
+                .map(Article::toEntry)
+                .doOnComplete(this::loadFromDatabase)
+                .subscribe(s -> db.mEntryDao().insertEntry(s)));
+    }
+
+    private void getCategory(String category) {
+
+        mDisposable.add(newsService.requestByCategory(country, apiKey, category)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))

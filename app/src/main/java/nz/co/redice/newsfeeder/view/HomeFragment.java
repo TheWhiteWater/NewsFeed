@@ -35,7 +35,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mPagerAdapter = new PagerAdapter(getChildFragmentManager());
         mBinding.viewpager.setAdapter(mPagerAdapter);
-
         mBinding.tablayout.setupWithViewPager(mBinding.viewpager);
 
         mPagerAdapter.setTabs(Arrays.asList(

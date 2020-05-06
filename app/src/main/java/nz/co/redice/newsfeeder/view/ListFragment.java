@@ -27,13 +27,13 @@ public class ListFragment extends Fragment {
 
 
     public static ListFragment newInstance(Category category) {
-        ListFragment fragment = new ListFragment();
-        fragment.setArguments(category);
+        ListFragment fragment = new ListFragment(category);
         return fragment;
     }
 
-    private void setArguments(Category category) {
-        mCategory= category;
+
+    public ListFragment(Category category) {
+        mCategory = category;
     }
 
     @Override

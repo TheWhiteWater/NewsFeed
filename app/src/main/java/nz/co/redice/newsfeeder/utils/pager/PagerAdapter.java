@@ -28,6 +28,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+//        ListFragment fragment = new ListFragment();
+//        fragment.setCategory(mTabs.get(position));
+//        return fragment;
         return ListFragment.newInstance(mTabs.get(position));
     }
 

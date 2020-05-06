@@ -88,7 +88,7 @@ public class Article {
 
 
 
-    public Entry toEntry() {
+    public  Entry toEntry() {
         return new Entry(
                 this.getSource().getName(),
                 this.getAuthor(),
