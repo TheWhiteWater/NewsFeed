@@ -17,7 +17,7 @@ public interface EntryDao {
     @Query("SELECT * FROM Entry")
     Observable<List<Entry>> getAllEntries();
 
-    @Query("SELECT * FROM Entry where uuid = :category")
+    @Query("SELECT * FROM Entry where category = :category")
     Observable<List<Entry>> getAllEntries(String category);
 
     @Query("SELECT * FROM Entry where uuid = :uuid")

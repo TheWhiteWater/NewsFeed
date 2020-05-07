@@ -57,8 +57,9 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel.gimmeSomeNews(mCategory);
-        mViewModel.loadFromDatabase(mCategory.toString());
+//        mViewModel.gimmeSomeNews(mCategory.toString());
+        mViewModel.requestCategory(mCategory.getTag());
+        mViewModel.loadFromDatabase(mCategory.getTag());
 
         mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
             mRecyclerAdapter.updateShowList(showEntry);
@@ -88,7 +89,6 @@ public class ListFragment extends Fragment {
         action.setUuid(entry);
         Navigation.findNavController(mBinding.parentLayout).navigate(action);
     }
-
 
 
 }

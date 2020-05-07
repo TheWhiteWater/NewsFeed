@@ -10,6 +10,7 @@ public enum Category {
         public String toString() {
             return "Top Headlines";
         }
+        public String getTag() {return "";}
     },
     BUSINESS {
         @NonNull
@@ -17,6 +18,8 @@ public enum Category {
         public String toString() {
             return "Business";
         }
+        public String getTag() {return "business";}
+
     },
     ENTERTAINMENT {
         @NonNull
@@ -24,6 +27,8 @@ public enum Category {
         public String toString() {
             return "Entertainment";
         }
+        public String getTag() {return "entertainment";}
+
     },
     HEALTH {
         @NonNull
@@ -31,6 +36,8 @@ public enum Category {
         public String toString() {
             return "Health";
         }
+        public String getTag() {return "health";}
+
     },
     SCIENCE {
         @NonNull
@@ -38,6 +45,8 @@ public enum Category {
         public String toString() {
             return "Science";
         }
+        public String getTag() {return "science";}
+
     },
     SPORTS {
         @NonNull
@@ -45,6 +54,8 @@ public enum Category {
         public String toString() {
             return "Sports";
         }
+        public String getTag() {return "sports";}
+
     },
     TECHNOLOGY {
         @NonNull
@@ -52,7 +63,11 @@ public enum Category {
         public String toString() {
             return "Technology";
         }
-    }
+        public String getTag() {return "technology";}
+
+    };
+
+    abstract String getTag();
 
 
 

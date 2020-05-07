@@ -52,18 +52,20 @@ public class ListViewModel extends AndroidViewModel {
     }
 
 
-    public void gimmeSomeNews(Category category) {
+    public void gimmeSomeNews(String category) {
         // TODO: 5/4/2020   time intervals for ui update if idle
         // TODO: 5/4/2020   time scope for database cleaning
+
+
 
         fetchCategory(category);
 
 
     }
 
-    private void fetchCategory(Category category) {
-        requestCategory(category.toString());
-        loadFromDatabase(category.toString());
+    private void fetchCategory(String category) {
+        requestCategory(category);
+        loadFromDatabase(category);
     }
 
     private void requestTopHeadlines() {
@@ -75,7 +77,7 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
-    private void requestCategory(String category) {
+    public void requestCategory(String category) {
         mDisposable.add(newsService.requestByCategory(country, apiKey, category)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
@@ -94,7 +96,7 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> setLifeData(s)));
+                .subscribe(s -> setLifeData(s) ));
     }
 
 
