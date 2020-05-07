@@ -48,10 +48,6 @@ public class Entry {
         return EntryFormat.getTimeAgo(publishedAt);
     }
 
-//    public void setPublishedAt(String publishedAt) {
-//        this.publishedAt = EntryFormat.convertStringToLong(publishedAt);
-//    }
-
     public void setPublishedAt(Long publishedAt) {
         this.publishedAt = publishedAt;
     }

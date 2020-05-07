@@ -1,7 +1,6 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -66,37 +65,36 @@ public class ListViewModel extends AndroidViewModel {
     public void gimmeSomeNews(Category category) {
         // TODO: 5/4/2020   time intervals for ui update if idle
         // TODO: 5/4/2020   time scope for database cleaning
-        clearDatabase();
 
         switch (category) {
             case TOPS_HEADLINES:
             default:
-                getTopNews();
+                requestTopHeadlines();
                 break;
             case HEALTH:
-                getCategory("health");
+                requestCategory("health");
                 break;
             case SPORTS:
-                getCategory("sports");
+                requestCategory("sports");
                 break;
             case SCIENCE:
-                getCategory("science");
+                requestCategory("science");
                 break;
             case BUSINESS:
-                getCategory("business");
+                requestCategory("business");
                 break;
             case TECHNOLOGY:
-                getCategory("technology");
+                requestCategory("technology");
                 break;
             case ENTERTAINMENT:
-                getCategory("entertainment");
+                requestCategory("entertainment");
                 break;
         }
 
 
     }
 
-    private void getTopNews() {
+    private void requestTopHeadlines() {
         mDisposable.add(newsService.requestTopHeadlines(country, apiKey)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
@@ -106,8 +104,7 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
-    private void getCategory(String category) {
-
+    private void requestCategory(String category) {
         mDisposable.add(newsService.requestByCategory(country, apiKey, category)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
@@ -119,13 +116,6 @@ public class ListViewModel extends AndroidViewModel {
 
 
     public void loadFromDatabase() {
-
-        // TODO: 5/6/2020 intervals
-//        Observable.interval(0, 5, TimeUnit.MINUTES)
-//                .debounce(2, TimeUnit.SECONDS)
-//                .subscribe(i -> this.loadFromDatabase());
-
-
         mDisposable.add((db.mEntryDao().getAllEntries())
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
