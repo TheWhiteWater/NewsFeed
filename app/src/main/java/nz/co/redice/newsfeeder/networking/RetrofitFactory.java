@@ -7,13 +7,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NewsServiceFactory {
+public class RetrofitFactory {
 
     public static final String BASE_URL = "https://newsapi.org/v2/";
     private static Retrofit instance;
 
 
-    private NewsServiceFactory() {
+    private RetrofitFactory() {
 
         HttpLoggingInterceptor mLoggingInterceptor = new HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -33,7 +33,7 @@ public class NewsServiceFactory {
 
     public static NewsService create() {
         if (instance == null) {
-            new NewsServiceFactory();
+            new RetrofitFactory();
         }
         return instance.create(NewsService.class);
     }

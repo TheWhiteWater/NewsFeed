@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import nz.co.redice.newsfeeder.dao.EntryDao;
-import nz.co.redice.newsfeeder.model.Entry;
+import nz.co.redice.newsfeeder.dao.Entry;
 
 
 @Database(entities = {Entry.class}, version = 1)

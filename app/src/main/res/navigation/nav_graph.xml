@@ -3,23 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/listFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/listFragment"
         android:name="nz.co.redice.newsfeeder.view.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
-            android:id="@+id/action_to_detailFragment"
+            android:id="@+id/detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="nz.co.redice.newsfeeder.view.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="uuid"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
-            android:id="@+id/action_to_listFragment"
+            android:id="@+id/listFragment"
             app:destination="@id/listFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="nz.co.redice.newsfeeder.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+
 </navigation>
