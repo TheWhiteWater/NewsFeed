@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import nz.co.redice.newsfeeder.repository.local.DateFormater;
 
-@Entity
+@Entity 
 public class Entry {
 
     public String source;
@@ -18,6 +18,7 @@ public class Entry {
     public String urlToImage;
     private Long publishedAt;
     public String content;
+    private String category;
 
     @PrimaryKey(autoGenerate = true)
     public int uuid;
@@ -38,6 +39,14 @@ public class Entry {
     }
 
     public Entry() {
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Long getPublishedAt() {

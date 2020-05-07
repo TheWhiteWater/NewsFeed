@@ -23,7 +23,7 @@ public interface NewsService {
     Single<Headlines> requestByCategory(
             @Query("country") String country,
             @Query("apiKey") String apiKey,
-            @Query("health") String category);
+            @Query("category") String category);
 
 
 }

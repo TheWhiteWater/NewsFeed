@@ -58,7 +58,7 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mViewModel.gimmeSomeNews(mCategory);
-        mViewModel.loadFromDatabase();
+        mViewModel.loadFromDatabase(mCategory.toString());
 
         mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
             mRecyclerAdapter.updateShowList(showEntry);

@@ -12,11 +12,11 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import nz.co.redice.newsfeeder.repository.local.AppDatabase;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
-import nz.co.redice.newsfeeder.repository.remote.model.Article;
 import nz.co.redice.newsfeeder.repository.remote.NewsService;
 import nz.co.redice.newsfeeder.repository.remote.RetrofitFactory;
-import nz.co.redice.newsfeeder.repository.local.AppDatabase;
+import nz.co.redice.newsfeeder.repository.remote.model.Article;
 import nz.co.redice.newsfeeder.utils.Category;
 
 
@@ -51,47 +51,19 @@ public class ListViewModel extends AndroidViewModel {
         return loading;
     }
 
-    private void searchFor(String keyWord) {
-        mDisposable.add(newsService.search(keyWord, apiKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toObservable()
-                .map(h -> h.getArticles())
-                .flatMap(s -> Observable.fromIterable(s))
-                .subscribe(s -> s.toEntry()));
-    }
-
 
     public void gimmeSomeNews(Category category) {
         // TODO: 5/4/2020   time intervals for ui update if idle
         // TODO: 5/4/2020   time scope for database cleaning
 
-        switch (category) {
-            case TOPS_HEADLINES:
-            default:
-                requestTopHeadlines();
-                break;
-            case HEALTH:
-                requestCategory("health");
-                break;
-            case SPORTS:
-                requestCategory("sports");
-                break;
-            case SCIENCE:
-                requestCategory("science");
-                break;
-            case BUSINESS:
-                requestCategory("business");
-                break;
-            case TECHNOLOGY:
-                requestCategory("technology");
-                break;
-            case ENTERTAINMENT:
-                requestCategory("entertainment");
-                break;
-        }
+        fetchCategory(category);
 
 
+    }
+
+    private void fetchCategory(Category category) {
+        requestCategory(category.toString());
+        loadFromDatabase(category.toString());
     }
 
     private void requestTopHeadlines() {
@@ -100,7 +72,6 @@ public class ListViewModel extends AndroidViewModel {
                 .toObservable()
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))
                 .map(Article::toEntry)
-                .doOnComplete(this::loadFromDatabase)
                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
@@ -110,13 +81,16 @@ public class ListViewModel extends AndroidViewModel {
                 .toObservable()
                 .flatMap(s -> Observable.fromIterable(s.getArticles()))
                 .map(Article::toEntry)
-                .doOnComplete(this::loadFromDatabase)
+                .map(s -> {
+                    s.setCategory(category);
+                    return s;
+                })
                 .subscribe(s -> db.mEntryDao().insertEntry(s)));
     }
 
 
-    public void loadFromDatabase() {
-        mDisposable.add((db.mEntryDao().getAllEntries())
+    public void loadFromDatabase(String category) {
+        mDisposable.add((db.mEntryDao().getAllEntries(category))
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
