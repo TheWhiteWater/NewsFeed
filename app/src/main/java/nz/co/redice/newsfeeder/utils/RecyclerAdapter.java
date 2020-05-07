@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Observable;
-import nz.co.redice.newsfeeder.dao.Entry;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
-import nz.co.redice.newsfeeder.view.ListFragment;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {

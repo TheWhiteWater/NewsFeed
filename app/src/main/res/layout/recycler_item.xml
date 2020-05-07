@@ -4,10 +4,10 @@
     <data>
         <variable
             name="entry"
-            type="nz.co.redice.newsfeeder.dao.Entry" />
+            type="nz.co.redice.newsfeeder.repository.local.dao.Entry" />
         <variable
             name="fragment"
-            type="nz.co.redice.newsfeeder.view.ListFragment" />
+            type="nz.co.redice.newsfeeder.utils.ListFragment" />
     </data>
 
 

@@ -4,7 +4,7 @@
 <data>
     <variable
         name="entry"
-        type="nz.co.redice.newsfeeder.dao.Entry" />
+        type="nz.co.redice.newsfeeder.repository.local.dao.Entry" />
 
 </data>
 

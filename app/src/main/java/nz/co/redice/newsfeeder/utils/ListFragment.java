@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.view;
+package nz.co.redice.newsfeeder.utils;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
-import nz.co.redice.newsfeeder.utils.pager.Category;
-import nz.co.redice.newsfeeder.utils.RecyclerAdapter;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
@@ -85,6 +83,7 @@ public class ListFragment extends Fragment {
 
 
     public void onRecyclerItemClick(int entry) {
+
         ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
         action.setUuid(entry);
         Navigation.findNavController(mBinding.parentLayout).navigate(action);

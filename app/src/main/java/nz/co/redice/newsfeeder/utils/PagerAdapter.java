@@ -1,15 +1,11 @@
-package nz.co.redice.newsfeeder.utils.pager;
+package nz.co.redice.newsfeeder.utils;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import nz.co.redice.newsfeeder.view.ListFragment;
 
 
 public class PagerAdapter extends FragmentStateAdapter {

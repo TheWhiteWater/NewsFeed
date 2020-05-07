@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.networking;
+package nz.co.redice.newsfeeder.repository.remote;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 

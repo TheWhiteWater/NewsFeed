@@ -1,11 +1,11 @@
-package nz.co.redice.newsfeeder.utils;
+package nz.co.redice.newsfeeder.repository.local;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import java.text.ParsePosition;
 import java.util.Date;
 
-public class EntryFormat {
+public class DateFormater {
 
     public static String getTimeAgo(long time) {
         final int SECOND_MILLIS = 1000;

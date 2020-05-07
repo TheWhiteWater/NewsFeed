@@ -12,12 +12,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import nz.co.redice.newsfeeder.dao.Entry;
-import nz.co.redice.newsfeeder.model.Article;
-import nz.co.redice.newsfeeder.networking.NewsService;
-import nz.co.redice.newsfeeder.networking.RetrofitFactory;
-import nz.co.redice.newsfeeder.utils.AppDatabase;
-import nz.co.redice.newsfeeder.utils.pager.Category;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
+import nz.co.redice.newsfeeder.repository.remote.model.Article;
+import nz.co.redice.newsfeeder.repository.remote.NewsService;
+import nz.co.redice.newsfeeder.repository.remote.RetrofitFactory;
+import nz.co.redice.newsfeeder.repository.local.AppDatabase;
+import nz.co.redice.newsfeeder.utils.Category;
 
 
 public class ListViewModel extends AndroidViewModel {

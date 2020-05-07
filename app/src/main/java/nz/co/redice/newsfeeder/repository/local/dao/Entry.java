@@ -1,11 +1,11 @@
-package nz.co.redice.newsfeeder.dao;
+package nz.co.redice.newsfeeder.repository.local.dao;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-import nz.co.redice.newsfeeder.utils.EntryFormat;
+import nz.co.redice.newsfeeder.repository.local.DateFormater;
 
 @Entity
 public class Entry {
@@ -33,7 +33,7 @@ public class Entry {
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
-        this.publishedAt = EntryFormat.convertStringToLong(publishedAt);
+        this.publishedAt = DateFormater.convertStringToLong(publishedAt);
         this.content = content;
     }
 
@@ -45,7 +45,7 @@ public class Entry {
     }
 
     public String getPublishedAgo() {
-        return EntryFormat.getTimeAgo(publishedAt);
+        return DateFormater.getTimeAgo(publishedAt);
     }
 
     public void setPublishedAt(Long publishedAt) {

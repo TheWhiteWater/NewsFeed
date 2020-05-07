@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.utils.pager;
+package nz.co.redice.newsfeeder.utils;
 
 import androidx.annotation.NonNull;
 

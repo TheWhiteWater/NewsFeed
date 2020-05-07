@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.model;
+package nz.co.redice.newsfeeder.repository.remote.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,10 +1,10 @@
-package nz.co.redice.newsfeeder.model;
+package nz.co.redice.newsfeeder.repository.remote.model;
 
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import nz.co.redice.newsfeeder.dao.Entry;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
 public class Article {
 
