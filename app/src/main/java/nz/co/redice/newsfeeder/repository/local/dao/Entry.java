@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-import nz.co.redice.newsfeeder.repository.local.DateFormater;
+import nz.co.redice.newsfeeder.repository.local.DateFormatter;
 
-@Entity 
+@Entity
 public class Entry {
 
     public String source;
@@ -34,7 +34,7 @@ public class Entry {
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
-        this.publishedAt = DateFormater.convertStringToLong(publishedAt);
+        this.publishedAt = DateFormatter.convertStringToLong(publishedAt);
         this.content = content;
     }
 
@@ -54,7 +54,7 @@ public class Entry {
     }
 
     public String getPublishedAgo() {
-        return DateFormater.getTimeAgo(publishedAt);
+        return DateFormatter.getTimeAgo(publishedAt);
     }
 
     public void setPublishedAt(Long publishedAt) {

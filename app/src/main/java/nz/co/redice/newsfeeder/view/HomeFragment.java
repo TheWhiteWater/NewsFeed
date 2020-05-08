@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import nz.co.redice.newsfeeder.databinding.FragmentHomeBinding;
-import nz.co.redice.newsfeeder.utils.Category;
-import nz.co.redice.newsfeeder.utils.PagerAdapter;
+import nz.co.redice.newsfeeder.view.presentation.Category;
+import nz.co.redice.newsfeeder.view.presentation.PagerAdapter;
 
 
 public class HomeFragment extends Fragment {

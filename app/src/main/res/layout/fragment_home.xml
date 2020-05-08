@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment">
 
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
@@ -20,7 +21,16 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/primary_dark"
+        android:backgroundTint="@color/primary_dark" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

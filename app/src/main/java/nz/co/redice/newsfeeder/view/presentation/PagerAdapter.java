@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.utils;
+package nz.co.redice.newsfeeder.view.presentation;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,8 +9,6 @@ import java.util.List;
 
 
 public class PagerAdapter extends FragmentStateAdapter {
-
-
 
     List<Category> mTabs = new ArrayList<>();
 

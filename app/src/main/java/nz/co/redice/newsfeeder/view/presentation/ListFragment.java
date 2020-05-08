@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.utils;
+package nz.co.redice.newsfeeder.view.presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,9 +57,7 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        mViewModel.gimmeSomeNews(mCategory.toString());
-        mViewModel.requestCategory(mCategory.getTag());
-        mViewModel.loadFromDatabase(mCategory.getTag());
+        mViewModel.fetchCategory(mCategory.getTag());
 
         mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
             mRecyclerAdapter.updateShowList(showEntry);

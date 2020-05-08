@@ -17,7 +17,6 @@ import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 import nz.co.redice.newsfeeder.repository.remote.NewsService;
 import nz.co.redice.newsfeeder.repository.remote.RetrofitFactory;
 import nz.co.redice.newsfeeder.repository.remote.model.Article;
-import nz.co.redice.newsfeeder.utils.Category;
 
 
 public class ListViewModel extends AndroidViewModel {
@@ -52,32 +51,14 @@ public class ListViewModel extends AndroidViewModel {
     }
 
 
-    public void gimmeSomeNews(String category) {
-        // TODO: 5/4/2020   time intervals for ui update if idle
-        // TODO: 5/4/2020   time scope for database cleaning
-
-
-
-        fetchCategory(category);
-
-
-    }
-
-    private void fetchCategory(String category) {
+    // TODO: 5/4/2020   time intervals for ui update if idle
+    // TODO: 5/4/2020   time scope for database cleaning
+    public void fetchCategory(String category) {
         requestCategory(category);
         loadFromDatabase(category);
     }
 
-    private void requestTopHeadlines() {
-        mDisposable.add(newsService.requestTopHeadlines(country, apiKey)
-                .subscribeOn(Schedulers.io())
-                .toObservable()
-                .flatMap(s -> Observable.fromIterable(s.getArticles()))
-                .map(Article::toEntry)
-                .subscribe(s -> db.mEntryDao().insertEntry(s)));
-    }
-
-    public void requestCategory(String category) {
+    private void requestCategory(String category) {
         mDisposable.add(newsService.requestByCategory(country, apiKey, category)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
@@ -96,7 +77,7 @@ public class ListViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> setLifeData(s) ));
+                .subscribe(s -> setLifeData(s)));
     }
 
 

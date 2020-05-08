@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.utils;
+package nz.co.redice.newsfeeder.view.presentation;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

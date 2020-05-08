@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.utils;
+package nz.co.redice.newsfeeder.view.presentation;
 
 import android.widget.ImageView;
 

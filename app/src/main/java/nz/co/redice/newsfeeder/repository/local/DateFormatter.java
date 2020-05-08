@@ -5,7 +5,7 @@ import com.google.gson.internal.bind.util.ISO8601Utils;
 import java.text.ParsePosition;
 import java.util.Date;
 
-public class DateFormater {
+public class DateFormatter {
 
     public static String getTimeAgo(long time) {
         final int SECOND_MILLIS = 1000;
