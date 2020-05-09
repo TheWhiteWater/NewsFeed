@@ -93,7 +93,6 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
         action.setUuid(uuid);
         action.setCategory(mCategory.toString());
         Navigation.findNavController(mBinding.refreshLayout).navigate(action);
-
     }
 
     @Override
