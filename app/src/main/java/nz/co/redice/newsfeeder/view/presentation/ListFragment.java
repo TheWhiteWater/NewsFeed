@@ -98,8 +98,8 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
 
     @Override
     public void onRefresh() {
-        mViewModel.clearDatabase();
         mRecyclerAdapter.clearList();
+        mViewModel.clearDatabase();
         mViewModel.fetchCategory(mCategory.getTag());
         mBinding.refreshLayout.setRefreshing(false);
     }

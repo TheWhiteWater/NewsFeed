@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            app:cardCornerRadius="5dp"
             android:elevation="4dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,8 +62,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:text="@{entry.source}"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/holo_blue_light"
                     android:textStyle="bold"
+                    android:padding="2dp"
                     app:layout_constraintEnd_toEndOf="@+id/image"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Source.co.nz" />
@@ -73,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:text="@{entry.publishedAgo}"
-                    android:textColor="@android:color/white"
+                    android:padding="2dp"
+                    android:textColor="@android:color/holo_red_light"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/image"
                     app:layout_constraintTop_toTopOf="parent"
