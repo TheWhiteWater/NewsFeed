@@ -3,110 +3,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<data>
-    <variable
-        name="entry"
-        type="nz.co.redice.newsfeeder.repository.local.dao.Entry" />
+    <data>
 
-</data>
+        <variable
+            name="entry"
+            type="nz.co.redice.newsfeeder.repository.local.dao.Entry" />
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.DetailFragment">
+    </data>
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.DetailFragment">
+
+
+        <!--        <com.google.android.material.appbar.AppBarLayout-->
+        <!--            android:id="@+id/appbar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/primary"
             android:layout_height="?attr/actionBarSize" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <!--        </com.google.android.material.appbar.AppBarLayout>-->
 
-    <ScrollView
-        android:id="@+id/detail_fragment_scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/inner_constraintlayout"
+        <ScrollView
+            android:id="@+id/detail_fragment_scrollview"
             android:layout_width="match_parent"
-            android:layout_margin="12dp"
             android:layout_height="wrap_content">
 
-
-            <TextView
-                android:id="@+id/entry_title"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inner_constraintlayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{entry.title}"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
+                android:layout_margin="6dp"
+                android:layout_height="wrap_content">
 
 
-            <TextView
-                android:id="@+id/entry_source"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@{entry.source}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/entry_title" />
+                <TextView
+                    android:id="@+id/entry_title"
+                    style="@style/DetailHeadline"
+                    android:text="@{entry.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Headline" />
 
-            <TextView
-                android:id="@+id/entry_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                tools:text="January 25, 20 17:23 pm"
-                android:text="@{String.valueOf(entry.publishedAt)}"
-                app:layout_constraintStart_toStartOf="@+id/entry_source"
-                app:layout_constraintTop_toBottomOf="@+id/entry_source" />
+                <TextView
+                    android:id="@+id/entry_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{entry.source}"
+                    tools:text="Source"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_title" />
 
-            <Button
-                android:id="@+id/toFavoritesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Follow"
+                <TextView
+                    android:id="@+id/entry_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@{entry.publishedDateTime}"
+                    app:layout_constraintStart_toStartOf="@+id/entry_source"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_source"
+                    tools:text="January 25, 20 17:23 pm" />
 
-                app:layout_constraintBottom_toBottomOf="@+id/entry_date"
-                app:layout_constraintEnd_toEndOf="parent" />
 
+                <ImageView
+                    android:id="@+id/entry_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_height"
+                    android:layout_marginTop="16dp"
+                    android:detailImage="@{entry.urlToImage}"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/entry_date"
+                    android:contentDescription="TODO" />
 
-            <ImageView
-                android:id="@+id/entry_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/image_height"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/no_image_placeholder"
-                android:imageUrl="@{entry.urlToImage}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/entry_date" />
+                <TextView
+                    android:id="@+id/entry_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@{entry.content}"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/entry_image" />
 
-            <TextView
-                android:id="@+id/entry_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{entry.content}"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/entry_image" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-    </ScrollView>
-
-</LinearLayout>
+    </LinearLayout>
 
 </layout>
