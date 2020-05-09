@@ -47,7 +47,8 @@ public class ListFragment extends Fragment implements OnEntryClickListener {
         View view = this.mBinding.getRoot();
 
         this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mRecyclerAdapter = new RecyclerAdapter(this);
+        mRecyclerAdapter = new RecyclerAdapter();
+        mRecyclerAdapter.setOnClickListener(this);
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
 
         return view;

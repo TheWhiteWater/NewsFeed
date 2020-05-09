@@ -16,12 +16,8 @@ import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
-    private final OnEntryClickListener mListener;
     private List<Entry> showList = new ArrayList<>();
-
-    public RecyclerAdapter(OnEntryClickListener listener) {
-        mListener = listener;
-    }
+    private OnEntryClickListener mOnClickListener;
 
     @NonNull
     @Override
@@ -33,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(showList.get(position), mListener);
+        holder.bind(showList.get(position), mOnClickListener);
     }
 
     public void updateShowList(Entry entry) {
@@ -45,12 +41,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         Collections.sort(showList, (o1, o2) -> o2.getPublishedAt().compareTo(o1.getPublishedAt()));
         notifyDataSetChanged();
     }
-
-    private void sortBySource() {
-        Collections.sort(showList, (o1, o2) -> o1.source.compareTo(o2.source));
-        notifyDataSetChanged();
-    }
-
 
 
     private void add(Entry newItem) {
@@ -69,27 +59,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         return showList.size();
     }
 
+    public void setOnClickListener(OnEntryClickListener listener) {
+        mOnClickListener = listener;
+    }
+
     public void clearList() {
         showList.clear();
     }
 
-    public static class Holder extends RecyclerView.ViewHolder  {
+
+    public static class Holder extends RecyclerView.ViewHolder {
 
 
         private RecyclerItemBinding mBinding;
+
 
         public Holder(RecyclerItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }
 
-        public void bind(Entry entry, OnEntryClickListener listener) {
+        public void bind(Entry entry, OnEntryClickListener onClickListener) {
             mBinding.setEntry(entry);
-            mBinding.setListener(listener);
+            mBinding.setListener(onClickListener);
         }
 
 
     }
-
-
 }

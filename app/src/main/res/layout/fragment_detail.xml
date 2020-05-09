@@ -18,13 +18,7 @@
         tools:context=".view.DetailFragment">
 
 
-        <!--        <com.google.android.material.appbar.AppBarLayout-->
-        <!--            android:id="@+id/appbar"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent">-->
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -32,7 +26,6 @@
             android:background="@color/primary"
             android:layout_height="?attr/actionBarSize" />
 
-        <!--        </com.google.android.material.appbar.AppBarLayout>-->
 
         <ScrollView
             android:id="@+id/detail_fragment_scrollview"
@@ -50,6 +43,7 @@
                     android:id="@+id/entry_title"
                     style="@style/DetailHeadline"
                     android:text="@{entry.title}"
+                    android:justificationMode="inter_word"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -95,6 +89,7 @@
                     android:layout_marginTop="12dp"
                     android:text="@{entry.content}"
                     android:textSize="16sp"
+                    android:justificationMode="inter_word"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/entry_image" />
