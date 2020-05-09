@@ -87,7 +87,7 @@ public class ListViewModel extends AndroidViewModel {
         loading.setValue(false);
     }
 
-    private void clearDatabase() {
+    public void clearDatabase() {
         mDisposable.add(Completable.fromAction(db.mEntryDao()::deleteAllEntries)
                 .subscribeOn(Schedulers.io())
                 .subscribe());

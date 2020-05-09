@@ -16,11 +16,11 @@ import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
-    private final ListFragment mFragment;
+    private final OnEntryClickListener mListener;
     private List<Entry> showList = new ArrayList<>();
 
-    public RecyclerAdapter(ListFragment fragment) {
-        mFragment = fragment;
+    public RecyclerAdapter(OnEntryClickListener listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(showList.get(position), mFragment);
+        holder.bind(showList.get(position), mListener);
     }
 
     public void updateShowList(Entry entry) {
@@ -52,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     }
 
 
+
     private void add(Entry newItem) {
 
         for (Entry stockItem : showList) {
@@ -68,6 +69,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         return showList.size();
     }
 
+    public void clearList() {
+        showList.clear();
+    }
+
     public static class Holder extends RecyclerView.ViewHolder  {
 
 
@@ -78,9 +83,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             mBinding = binding;
         }
 
-        public void bind(Entry entry, ListFragment fragment) {
+        public void bind(Entry entry, OnEntryClickListener listener) {
             mBinding.setEntry(entry);
-            mBinding.setFragment(fragment);
+            mBinding.setListener(listener);
         }
 
 

@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 
 import nz.co.redice.newsfeeder.repository.local.DateFormatter;
+import nz.co.redice.newsfeeder.repository.local.TextFormatter;
 
 @Entity
 public class Entry {
-
     public String source;
     public String author;
     public String title;
@@ -30,7 +30,7 @@ public class Entry {
         if (author != null) {
             this.author = author.toString();
         } else this.author = "";
-        this.title = title;
+        this.title = TextFormatter.cutOfSourceName(title, source);
         this.description = description;
         this.url = url;
         this.urlToImage = urlToImage;
@@ -51,6 +51,10 @@ public class Entry {
 
     public Long getPublishedAt() {
         return publishedAt;
+    }
+
+    public String getPublishedDateTime() {
+        return DateFormatter.getPublishedDateTime(publishedAt);
     }
 
     public String getPublishedAgo() {

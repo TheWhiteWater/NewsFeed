@@ -3,9 +3,11 @@ package nz.co.redice.newsfeeder.repository.local;
 import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateFormatter {
+
 
     public static String getTimeAgo(long time) {
         final int SECOND_MILLIS = 1000;
@@ -52,5 +54,13 @@ public class DateFormatter {
             e.printStackTrace();
         }
         return instant.getTime();
+    }
+
+
+    public static String getPublishedDateTime(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM, HH:mm aa");
+        Date date = new Date(time);
+
+        return formatter.format(date);
     }
 }

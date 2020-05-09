@@ -16,7 +16,7 @@ import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements OnEntryClickListener {
 
     private FragmentListBinding mBinding;
     private ListViewModel mViewModel;
@@ -81,12 +81,19 @@ public class ListFragment extends Fragment {
     }
 
 
-    public void onRecyclerItemClick(int entry) {
-
+    @Override
+    public void onClick(int uuid, String category) {
         ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
-        action.setUuid(entry);
-        Navigation.findNavController(mBinding.parentLayout).navigate(action);
+        action.setUuid(uuid);
+        action.setCategory(category);
+        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
+
     }
 
-
+    public void onRefresh() {
+        mViewModel.clearDatabase();
+        mRecyclerAdapter.clearList();
+        mViewModel.fetchCategory(mCategory.getTag());
+        mBinding.refreshLayout.setRefreshing(false);
+    }
 }

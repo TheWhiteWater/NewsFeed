@@ -27,6 +27,10 @@
         <action
             android:id="@+id/listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue='""' />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
