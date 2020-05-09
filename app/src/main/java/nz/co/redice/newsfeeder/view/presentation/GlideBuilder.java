@@ -8,22 +8,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
+import nz.co.redice.newsfeeder.R;
+
 @GlideModule
 public class GlideBuilder extends AppGlideModule {
 
-//    public static CircularProgressDrawable getProgress(Context context) {
-//        CircularProgressDrawable cpd = new CircularProgressDrawable(context);
-//        cpd.setStrokeWidth(10f);
-//        cpd.setCenterRadius(50f);
-//        cpd.start();
-//        return cpd;
-//    }
 
-    @BindingAdapter("android:imageUrl")
-    public static void loadImage(ImageView view, String url) {
+    @BindingAdapter("android:thumbnailImage")
+    public static void loadThumbnailImage(ImageView view, String url) {
         Glide.with(view.getContext())
                 .load(url)
-                .fitCenter()
+                .override(600, 400)
+                .into(view);
+    }
+
+
+    @BindingAdapter("android:detailImage")
+    public static void loadBigImage(ImageView view, String url) {
+        Glide.with(view.getContext())
+                .load(url)
+                .placeholder(R.drawable.no_image_placeholder)
+                .error(R.drawable.no_image_placeholder)
+                .centerCrop()
                 .into(view);
     }
 }
