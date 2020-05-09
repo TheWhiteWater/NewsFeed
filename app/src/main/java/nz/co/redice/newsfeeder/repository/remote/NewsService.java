@@ -1,10 +1,9 @@
-package nz.co.redice.newsfeeder.networking;
+package nz.co.redice.newsfeeder.repository.remote;
 
 
 import io.reactivex.Single;
-import nz.co.redice.newsfeeder.model.Headlines;
+import nz.co.redice.newsfeeder.repository.remote.model.Headlines;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NewsService {
@@ -24,7 +23,7 @@ public interface NewsService {
     Single<Headlines> requestByCategory(
             @Query("country") String country,
             @Query("apiKey") String apiKey,
-            @Query("health") String category);
+            @Query("category") String category);
 
 
 }

@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/listFragment"
-        android:name="nz.co.redice.newsfeeder.view.ListFragment"
+        android:name="nz.co.redice.newsfeeder.view.presentation.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
@@ -27,6 +27,10 @@
         <action
             android:id="@+id/listFragment"
             app:destination="@id/listFragment" />
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue='""' />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"

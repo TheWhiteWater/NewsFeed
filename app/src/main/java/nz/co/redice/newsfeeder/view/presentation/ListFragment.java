@@ -1,6 +1,7 @@
-package nz.co.redice.newsfeeder.view;
+package nz.co.redice.newsfeeder.view.presentation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
-import nz.co.redice.newsfeeder.utils.pager.Category;
-import nz.co.redice.newsfeeder.utils.RecyclerAdapter;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements OnEntryClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private FragmentListBinding mBinding;
     private ListViewModel mViewModel;
@@ -49,9 +50,12 @@ public class ListFragment extends Fragment {
         View view = this.mBinding.getRoot();
 
         this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mRecyclerAdapter = new RecyclerAdapter(this);
+        mRecyclerAdapter = new RecyclerAdapter();
+        mRecyclerAdapter.setOnClickListener(this);
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
 
+        mBinding.refreshLayout.setOnRefreshListener(this);
+        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
         return view;
     }
 
@@ -59,8 +63,7 @@ public class ListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel.gimmeSomeNews(mCategory);
-        mViewModel.loadFromDatabase();
+        mViewModel.fetchCategory(mCategory.getTag());
 
         mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
             mRecyclerAdapter.updateShowList(showEntry);
@@ -84,12 +87,19 @@ public class ListFragment extends Fragment {
     }
 
 
-    public void onRecyclerItemClick(int entry) {
+    @Override
+    public void onClick(int uuid) {
         ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
-        action.setUuid(entry);
-        Navigation.findNavController(mBinding.parentLayout).navigate(action);
+        action.setUuid(uuid);
+        action.setCategory(mCategory.toString());
+        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
     }
 
-
-
+    @Override
+    public void onRefresh() {
+        mRecyclerAdapter.clearList();
+        mViewModel.clearDatabase();
+        mViewModel.fetchCategory(mCategory.getTag());
+        mBinding.refreshLayout.setRefreshing(false);
+    }
 }
