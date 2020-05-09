@@ -1,17 +1,19 @@
 package nz.co.redice.newsfeeder.view.presentation;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {

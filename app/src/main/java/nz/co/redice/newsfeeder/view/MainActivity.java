@@ -1,6 +1,7 @@
 package nz.co.redice.newsfeeder.view;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 

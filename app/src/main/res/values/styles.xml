@@ -35,4 +35,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.NoStatusBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

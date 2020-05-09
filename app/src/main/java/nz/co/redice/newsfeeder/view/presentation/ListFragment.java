@@ -1,6 +1,7 @@
 package nz.co.redice.newsfeeder.view.presentation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
-public class ListFragment extends Fragment implements OnEntryClickListener {
+public class ListFragment extends Fragment implements OnEntryClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private FragmentListBinding mBinding;
     private ListViewModel mViewModel;
@@ -51,6 +54,8 @@ public class ListFragment extends Fragment implements OnEntryClickListener {
         mRecyclerAdapter.setOnClickListener(this);
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
 
+        mBinding.refreshLayout.setOnRefreshListener(this);
+        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
         return view;
     }
 
@@ -83,14 +88,15 @@ public class ListFragment extends Fragment implements OnEntryClickListener {
 
 
     @Override
-    public void onClick(int uuid, String category) {
+    public void onClick(int uuid) {
         ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
         action.setUuid(uuid);
-        action.setCategory(category);
+        action.setCategory(mCategory.toString());
         Navigation.findNavController(mBinding.refreshLayout).navigate(action);
 
     }
 
+    @Override
     public void onRefresh() {
         mViewModel.clearDatabase();
         mRecyclerAdapter.clearList();
