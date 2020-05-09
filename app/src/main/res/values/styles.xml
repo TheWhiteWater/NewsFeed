@@ -34,4 +34,5 @@
         <item name="android:textSize">@dimen/details_headline_size</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 </resources>
