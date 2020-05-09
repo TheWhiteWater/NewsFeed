@@ -1,11 +1,9 @@
 package nz.co.redice.newsfeeder.view;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,9 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentDetailBinding;
 import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 
@@ -29,7 +25,6 @@ public class DetailFragment extends Fragment {
     private DetailViewModel mViewModel;
     private int uuid;
     private String mCategory;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,12 +48,12 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setToolbar(view);
-
         fetchScreen();
+        setCollapsingTitle();
+    }
 
-        final CollapsingToolbarLayout collapsingToolbarLayout = mBinding.collapsingToolbar;
-        AppBarLayout appBarLayout = mBinding.appbar;
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+    private void setCollapsingTitle() {
+        mBinding.appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;
 
@@ -68,15 +63,14 @@ public class DetailFragment extends Fragment {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(mCategory);
+                    mBinding.collapsingToolbar.setTitle(mCategory);
                     isShow = true;
                 } else if(isShow) {
-                    collapsingToolbarLayout.setTitle(" ");//careful there should a space between double quote otherwise it wont work
+                    mBinding.collapsingToolbar.setTitle(" ");//careful there should a space between double quote otherwise it wont work
                     isShow = false;
                 }
             }
         });
-
     }
 
     private void setToolbar(@NonNull View view) {
@@ -93,7 +87,6 @@ public class DetailFragment extends Fragment {
         mViewModel.getEntry().observe(getViewLifecycleOwner(),
                 s -> mBinding.setEntry(s));
     }
-
 
     @Override
     public void onDestroyView() {
