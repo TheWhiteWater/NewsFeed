@@ -78,36 +78,43 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Headline" />
 
-                <TextView
+                <Button
                     android:id="@+id/entry_source"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="@{entry.source}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/entry_title"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintBottom_toBottomOf="@+id/entry_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/entry_date"
+                    app:layout_constraintTop_toTopOf="@+id/entry_date"
                     tools:text="Source" />
 
                 <TextView
                     android:id="@+id/entry_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     android:text="@{entry.publishedDateTime}"
-                    app:layout_constraintStart_toStartOf="@+id/entry_source"
-                    app:layout_constraintTop_toBottomOf="@+id/entry_source"
+                    app:layout_constraintEnd_toStartOf="@+id/entry_source"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/entry_title"
                     tools:text="January 25, 20 17:23 pm" />
 
                 <TextView
                     android:id="@+id/entry_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:justificationMode="inter_word"
                     android:text="@{entry.content}"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/entry_date"
+                    tools:layout_editor_absoluteX="10dp"
                     tools:text="sdkjfhksjddhfkjsdhfkjh sdklfjlsdkjfklj" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
