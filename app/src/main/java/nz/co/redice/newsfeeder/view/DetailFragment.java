@@ -29,9 +29,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         mBinding = FragmentDetailBinding.inflate(inflater, container, false);
-
         return mBinding.getRoot();
     }
 
@@ -46,7 +44,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setToolbar(view);
         fetchScreen();
         setCollapsingTitle();
@@ -83,8 +80,7 @@ public class DetailFragment extends Fragment {
     private void fetchScreen() {
         uuid = DetailFragmentArgs.fromBundle(getArguments()).getUuid();
         mCategory = DetailFragmentArgs.fromBundle(getArguments()).getCategory();
-        mViewModel.loadEntryFromDatabase(uuid);
-        mViewModel.getEntry().observe(getViewLifecycleOwner(),
+        mViewModel.getEntryById(uuid).observe(getViewLifecycleOwner(),
                 s -> mBinding.setEntry(s));
     }
 

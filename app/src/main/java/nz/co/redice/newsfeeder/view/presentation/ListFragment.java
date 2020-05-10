@@ -63,20 +63,21 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel.fetchCategory(mCategory.getTag());
+//        mViewModel.fetchCategory(mCategory.getTag());
 
-        mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
-            mRecyclerAdapter.updateShowList(showEntry);
-            this.mBinding.errorTextView.setVisibility(View.INVISIBLE);
-            this.mBinding.progressbar.setVisibility(View.INVISIBLE);
+        mViewModel.getEntryList(mCategory.getTag()).observe(getViewLifecycleOwner(), newList -> {
+            mRecyclerAdapter.updateShowList(newList);
+
+//            this.mBinding.errorTextView.setVisibility(View.INVISIBLE);
+//            this.mBinding.progressbar.setVisibility(View.INVISIBLE);
         });
-        mViewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
-            this.mBinding.progressbar.setVisibility(loading ? View.VISIBLE : View.GONE);
-            this.mBinding.errorTextView.setVisibility(loading ? View.GONE : View.INVISIBLE);
-            this.mBinding.recyclerview.setVisibility(loading ? View.GONE : View.VISIBLE);
-        });
-        mViewModel.getError().observe(getViewLifecycleOwner(),
-                error -> mBinding.errorTextView.setVisibility(error ? View.VISIBLE : View.GONE));
+//        mViewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
+//            this.mBinding.progressbar.setVisibility(loading ? View.VISIBLE : View.GONE);
+//            this.mBinding.errorTextView.setVisibility(loading ? View.GONE : View.INVISIBLE);
+//            this.mBinding.recyclerview.setVisibility(loading ? View.GONE : View.VISIBLE);
+//        });
+//        mViewModel.getError().observe(getViewLifecycleOwner(),
+//                error -> mBinding.errorTextView.setVisibility(error ? View.VISIBLE : View.GONE));
     }
 
 
@@ -89,6 +90,7 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
 
     @Override
     public void onClick(int uuid) {
+        Log.d("App", "onClick: " + mCategory.toString());
         ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
         action.setUuid(uuid);
         action.setCategory(mCategory.toString());

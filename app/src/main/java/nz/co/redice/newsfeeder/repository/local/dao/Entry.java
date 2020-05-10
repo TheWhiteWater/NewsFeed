@@ -74,24 +74,4 @@ public class Entry {
         this.publishedAt = publishedAt;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Entry entry = (Entry) o;
-//        return uuid == entry.uuid &&
-//                Objects.equals(source, entry.source) &&
-//                Objects.equals(author, entry.author) &&
-//                Objects.equals(title, entry.title) &&
-//                Objects.equals(description, entry.description) &&
-//                Objects.equals(url, entry.url) &&
-//                Objects.equals(urlToImage, entry.urlToImage) &&
-//                Objects.equals(publishedAt, entry.publishedAt) &&
-//                Objects.equals(content, entry.content);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(source, author, title, description, url, urlToImage, publishedAt, content, uuid);
-//    }
 }

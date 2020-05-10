@@ -32,9 +32,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         holder.bind(showList.get(position), mOnClickListener);
     }
 
-    public void updateShowList(Entry entry) {
-        add(entry);
+    public void updateShowList(List<Entry> list) {
+        if (showList.size() > 0) {
+            showList.clear();
+            notifyDataSetChanged();
+        }
+        for (Entry e : list) {
+            add(e);
+        }
         sortByDate();
+        notifyDataSetChanged();
     }
 
     private void sortByDate() {
@@ -44,7 +51,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
 
     private void add(Entry newItem) {
-
         for (Entry stockItem : showList) {
             if (stockItem.title.equals(newItem.title)) {
                 return;

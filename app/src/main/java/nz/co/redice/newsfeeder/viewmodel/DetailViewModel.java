@@ -4,14 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Room;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+import nz.co.redice.newsfeeder.repository.Repository;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
-import nz.co.redice.newsfeeder.repository.local.AppDatabase;
 
 public class DetailViewModel extends AndroidViewModel {
 
@@ -19,11 +17,9 @@ public class DetailViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> error = new MutableLiveData<>();
     private MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
-
-    private AppDatabase db = Room.databaseBuilder(getApplication(),
-            AppDatabase.class, "news_api.db").build();
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
+    private Repository mRepository;
 
     public MutableLiveData<Entry> getEntry() {
         return entry;
@@ -39,21 +35,12 @@ public class DetailViewModel extends AndroidViewModel {
 
     public DetailViewModel(@NonNull Application application) {
         super(application);
+        mRepository = Repository.getInstance(getApplication());
     }
 
 
-    public void loadEntryFromDatabase(int uuid) {
-        mDisposable.add((db.mEntryDao().getEntry(uuid))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> setLifeData(s)));
-    }
-
-
-    private void setLifeData(Entry s) {
-        entry.setValue(s);
-        error.setValue(false);
-        loading.setValue(false);
+    public LiveData<Entry> getEntryById(int uuid) {
+        return mRepository.retrieveEntryById(uuid);
     }
 
     @Override

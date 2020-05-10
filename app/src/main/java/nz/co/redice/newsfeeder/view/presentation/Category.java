@@ -67,7 +67,7 @@ public enum Category {
 
     };
 
-    abstract String getTag();
+    public abstract String getTag();
 
 
 

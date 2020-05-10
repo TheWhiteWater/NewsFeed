@@ -15,14 +15,4 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract EntryDao mEntryDao();
 
-    private static AppDatabase instance;
-
-    public static AppDatabase getDatabase(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(context, AppDatabase.class, "appDatabase")
-                    .build();
-        }
-        return instance;
-    }
-
 }
