@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.repository.local;
+package nz.co.redice.newsfeeder.repository.utils;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
 
