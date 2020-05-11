@@ -19,35 +19,47 @@ public class Entry {
     private Long publishedAt;
     public String content;
     private String category;
-
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int uuid;
 
+//    @Ignore
+//    public Entry(int uuid, String source, Object author, String title, String description,
+//                 String url, String urlToImage, String publishedAt, String content) {
+//        this.uuid = uuid;
+//        this.source = TextFormatter.getSourceTag(source);
+//        this.author = author != null ? author.toString() : "";
+//        this.title = TextFormatter.cutOfSourceName(title, source);
+//        this.description = description;
+//        this.url = url;
+//        this.urlToImage = urlToImage;
+//        this.publishedAt = DateFormatter.convertStringToLong(publishedAt);
+//        this.content = content;
+//    }
 
-    public Entry(String source, Object author, String title, String description,
-                 String url, String urlToImage, String publishedAt, String content) {
-        this.source = source;
-        if (author != null) {
-            this.author = author.toString();
-        } else this.author = "";
-        this.title = TextFormatter.cutOfSourceName(title, source);
-        this.description = description;
-        this.url = url;
-        this.urlToImage = urlToImage;
-        this.publishedAt = DateFormatter.convertStringToLong(publishedAt);
-        this.content = content;
-    }
 
     public Entry() {
     }
 
+    public Entry(int hashCode, String source, Object author, String title, String description,
+                 String url, String urlToImage, String publishedAt, String content) {
+        this.uuid = hashCode;
+        this.source = TextFormatter.getSourceTag(source);
+        this.author = author != null ? author.toString() : "";
+        this.description = description;
+        this.title = TextFormatter.cutOfSourceName(title);
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = DateFormatter.convertStringToLong(publishedAt);
+        this.content = content;
 
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
     }
 
     public int getUuid() {
         return uuid;
+    }
+
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
     }
 
     public String getCategory() {
@@ -74,4 +86,21 @@ public class Entry {
         this.publishedAt = publishedAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entry entry = (Entry) o;
+        return source.equals(entry.source) &&
+                title.equals(entry.title) &&
+                url.equals(entry.url) &&
+                Objects.equals(urlToImage, entry.urlToImage) &&
+                publishedAt.equals(entry.publishedAt) &&
+                category.equals(entry.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, url, publishedAt, category);
+    }
 }

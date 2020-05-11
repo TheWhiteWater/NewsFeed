@@ -63,9 +63,9 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        mViewModel.fetchCategory(mCategory.getTag());
+        mViewModel.fetchCategory(mCategory.getTag());
 
-        mViewModel.getEntryList(mCategory.getTag()).observe(getViewLifecycleOwner(), newList -> {
+        mViewModel.getEntryList().observe(getViewLifecycleOwner(), newList -> {
             mRecyclerAdapter.updateShowList(newList);
 
 //            this.mBinding.errorTextView.setVisibility(View.INVISIBLE);
@@ -100,8 +100,10 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     @Override
     public void onRefresh() {
         mRecyclerAdapter.clearList();
-        mViewModel.clearDatabase();
-        mViewModel.fetchCategory(mCategory.getTag());
+        mRecyclerAdapter.notifyDataSetChanged();
+        mViewModel.getEntryList().observe(getViewLifecycleOwner(), newList -> {
+            mRecyclerAdapter.updateShowList(newList);
+        });
         mBinding.refreshLayout.setRefreshing(false);
     }
 }

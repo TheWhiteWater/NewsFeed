@@ -2,6 +2,8 @@ package nz.co.redice.newsfeeder.view.presentation;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ public class PagerAdapter extends FragmentStateAdapter {
         mTabs.addAll(list);
     }
 
+//    public PagerAdapter(@NonNull FragmentManager fm, int behavior, List<Category> tabs) {
+//        super(fm, behavior);
+//        mTabs = tabs;
+//    }
 
     @NonNull
     @Override
@@ -31,4 +37,15 @@ public class PagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return mTabs.size();
     }
+
+//    @NonNull
+//    @Override
+//    public Fragment getItem(int position) {
+//        return ListFragment.newInstance(mTabs.get(position));
+//    }
+//
+//    @Override
+//    public int getCount() {
+//        return mTabs.size();
+//    }
 }

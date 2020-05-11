@@ -1,6 +1,7 @@
 package nz.co.redice.newsfeeder.repository.local.dao;
 
 
+import androidx.databinding.ObservableList;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -16,10 +17,10 @@ import io.reactivex.Single;
 public interface EntryDao {
 
     @Query("SELECT * FROM Entry")
-    LiveData<List<Entry>> getAllEntries();
+    Observable <List<Entry>> getAllEntries();
 
     @Query("SELECT * FROM Entry where category = :category")
-    LiveData<List<Entry>> getAllEntries(String category);
+    Observable<List<Entry>> getAllEntries(String category);
 
     @Query("SELECT * FROM Entry where uuid = :uuid")
     LiveData<Entry> getEntry(int uuid);

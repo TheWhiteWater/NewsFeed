@@ -4,6 +4,8 @@ package nz.co.redice.newsfeeder.repository.remote.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
 public class Article {
@@ -86,10 +88,25 @@ public class Article {
         return content;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return source.equals(article.source) &&
+                title.equals(article.title) &&
+                url.equals(article.url) &&
+                publishedAt.equals(article.publishedAt);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(source, title, url, publishedAt);
+    }
 
     public  Entry toEntry() {
         return new Entry(
+                this.hashCode(),
                 this.getSource().getName(),
                 this.getAuthor(),
                 this.getTitle(),
