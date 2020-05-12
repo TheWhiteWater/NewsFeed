@@ -31,8 +31,8 @@ public class Repository {
         mDao = mDatabase.mEntryDao();
         mNewsService = RetrofitFactory.create();
         Completable.fromAction(mDao::deleteAllEntries)
-                .subscribeOn(Schedulers.io());
-        startRequestingCategories(Constants.CATEGORIES);
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     public static Repository getInstance(Application application) {
@@ -41,14 +41,6 @@ public class Repository {
         return instance;
     }
 
-    public void startRequestingCategories(List<Category> list) {
-        for (Category c : list) {
-            Observable.interval(0, 5, TimeUnit.MINUTES)
-                    .debounce(500, TimeUnit.MILLISECONDS)
-                    .subscribe(x -> requestCategory(c.getTag()));
-        }
-
-    }
 
     public void requestCategory(String category) {
         mNewsService.requestByCategory(Constants.COUNTRY, Constants.API_KEY, category)
@@ -62,7 +54,7 @@ public class Repository {
                 }).subscribe(s -> mDao.insertEntry(s));
     }
 
-    public Observable<List<Entry>> retrieveByCategory(String category) {
+    public LiveData<List<Entry>> retrieveByCategory(String category) {
         return mDao.getAllEntries(category);
     }
 

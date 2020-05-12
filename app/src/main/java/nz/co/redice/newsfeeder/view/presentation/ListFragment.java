@@ -65,12 +65,7 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
 
         mViewModel.fetchCategory(mCategory.getTag());
 
-        mViewModel.getEntryList().observe(getViewLifecycleOwner(), newList -> {
-            mRecyclerAdapter.updateShowList(newList);
-
-//            this.mBinding.errorTextView.setVisibility(View.INVISIBLE);
-//            this.mBinding.progressbar.setVisibility(View.INVISIBLE);
-        });
+        getCategoryList(mCategory.getTag());
 //        mViewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
 //            this.mBinding.progressbar.setVisibility(loading ? View.VISIBLE : View.GONE);
 //            this.mBinding.errorTextView.setVisibility(loading ? View.GONE : View.INVISIBLE);
@@ -100,10 +95,13 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     @Override
     public void onRefresh() {
         mRecyclerAdapter.clearList();
-        mRecyclerAdapter.notifyDataSetChanged();
-        mViewModel.getEntryList().observe(getViewLifecycleOwner(), newList -> {
+        getCategoryList(mCategory.getTag());
+        mBinding.refreshLayout.setRefreshing(false);
+    }
+
+    private void getCategoryList(String category) {
+        mViewModel.getEntryList(category).observe(getViewLifecycleOwner(), newList -> {
             mRecyclerAdapter.updateShowList(newList);
         });
-        mBinding.refreshLayout.setRefreshing(false);
     }
 }
