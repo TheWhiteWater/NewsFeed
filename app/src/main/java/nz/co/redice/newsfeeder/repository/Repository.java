@@ -20,15 +20,12 @@ import nz.co.redice.newsfeeder.repository.utils.Constants;
 import nz.co.redice.newsfeeder.view.presentation.Category;
 
 public class Repository {
-
     private static Repository instance;
     private static NewsService mNewsService;
     private static EntryDao mDao;
-    private final AppDatabase mDatabase;
 
     private Repository(Application application) {
-        mDatabase = AppDatabase.getInstance(application);
-        mDao = mDatabase.mEntryDao();
+        mDao = AppDatabase.getInstance(application).mEntryDao();
         mNewsService = RetrofitFactory.create();
         Completable.fromAction(mDao::deleteAllEntries)
                 .subscribeOn(Schedulers.io())

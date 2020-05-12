@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import io.reactivex.disposables.CompositeDisposable;
 import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
@@ -62,17 +63,9 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mViewModel.fetchCategory(mCategory.getTag());
-
         getCategoryList(mCategory.getTag());
-//        mViewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
-//            this.mBinding.progressbar.setVisibility(loading ? View.VISIBLE : View.GONE);
-//            this.mBinding.errorTextView.setVisibility(loading ? View.GONE : View.INVISIBLE);
-//            this.mBinding.recyclerview.setVisibility(loading ? View.GONE : View.VISIBLE);
-//        });
-//        mViewModel.getError().observe(getViewLifecycleOwner(),
-//                error -> mBinding.errorTextView.setVisibility(error ? View.VISIBLE : View.GONE));
+
     }
 
 
