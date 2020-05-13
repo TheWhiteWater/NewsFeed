@@ -1,10 +1,10 @@
-package nz.co.redice.newsfeeder.repository.di.base;
+package nz.co.redice.newsfeeder.di.base;
 
 import android.app.Application;
 import android.content.Context;
 
-import nz.co.redice.newsfeeder.repository.di.DatabaseModule;
-import nz.co.redice.newsfeeder.repository.di.NetworkModule;
+import nz.co.redice.newsfeeder.di.modules.DatabaseModule;
+import nz.co.redice.newsfeeder.di.modules.NetworkModule;
 
 
 public class MyApplication extends Application {

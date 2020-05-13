@@ -18,8 +18,8 @@ import javax.inject.Inject;
 
 import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
-import nz.co.redice.newsfeeder.repository.di.ViewModelFactory;
-import nz.co.redice.newsfeeder.repository.di.base.MyApplication;
+import nz.co.redice.newsfeeder.di.modules.ViewModelFactory;
+import nz.co.redice.newsfeeder.di.base.MyApplication;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;

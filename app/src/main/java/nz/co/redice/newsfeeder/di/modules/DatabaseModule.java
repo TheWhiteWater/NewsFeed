@@ -1,6 +1,5 @@
-package nz.co.redice.newsfeeder.repository.di;
+package nz.co.redice.newsfeeder.di.modules;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.room.Room;

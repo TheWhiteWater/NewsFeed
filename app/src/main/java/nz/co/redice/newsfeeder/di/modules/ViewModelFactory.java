@@ -1,4 +1,4 @@
-package nz.co.redice.newsfeeder.repository.di;
+package nz.co.redice.newsfeeder.di.modules;
 
 
 import androidx.annotation.NonNull;

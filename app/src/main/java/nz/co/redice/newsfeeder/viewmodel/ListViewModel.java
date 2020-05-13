@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nz.co.redice.newsfeeder.repository.Repository;
-import nz.co.redice.newsfeeder.repository.di.ViewModelFactory;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
 

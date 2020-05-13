@@ -20,8 +20,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import javax.inject.Inject;
 
 import nz.co.redice.newsfeeder.databinding.FragmentDetailBinding;
-import nz.co.redice.newsfeeder.repository.di.ViewModelFactory;
-import nz.co.redice.newsfeeder.repository.di.base.MyApplication;
+import nz.co.redice.newsfeeder.di.modules.ViewModelFactory;
+import nz.co.redice.newsfeeder.di.base.MyApplication;
 import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 
 public class DetailFragment extends Fragment {

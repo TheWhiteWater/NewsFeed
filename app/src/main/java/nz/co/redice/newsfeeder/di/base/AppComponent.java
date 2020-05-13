@@ -1,15 +1,13 @@
-package nz.co.redice.newsfeeder.repository.di.base;
+package nz.co.redice.newsfeeder.di.base;
 
-
-import android.content.Context;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 import nz.co.redice.newsfeeder.repository.Repository;
-import nz.co.redice.newsfeeder.repository.di.DatabaseModule;
-import nz.co.redice.newsfeeder.repository.di.NetworkModule;
-import nz.co.redice.newsfeeder.repository.di.ViewModelModule;
+import nz.co.redice.newsfeeder.di.modules.DatabaseModule;
+import nz.co.redice.newsfeeder.di.modules.NetworkModule;
+import nz.co.redice.newsfeeder.di.modules.ViewModelModule;
 import nz.co.redice.newsfeeder.view.DetailFragment;
 import nz.co.redice.newsfeeder.view.presentation.ListFragment;
 
@@ -23,7 +21,6 @@ import nz.co.redice.newsfeeder.view.presentation.ListFragment;
 public interface AppComponent {
 
     Repository getRepository();
-
 
     void inject(ListFragment listFragment);
 
