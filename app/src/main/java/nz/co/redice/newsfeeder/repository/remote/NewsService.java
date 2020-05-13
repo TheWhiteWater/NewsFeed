@@ -8,7 +8,6 @@ import retrofit2.http.Query;
 
 public interface NewsService {
 
-
     @GET("top-headlines")
     Single<Headlines> requestTopHeadlines(
             @Query("country") String country,

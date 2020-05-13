@@ -17,7 +17,7 @@ import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
     private List<Entry> showList = new ArrayList<>();
-    private OnEntryClickListener mOnClickListener;
+    private EntrySelectedListener mListener;
 
     @NonNull
     @Override
@@ -29,7 +29,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(showList.get(position), mOnClickListener);
+        holder.bind(showList.get(position), mListener);
     }
 
     public void updateShowList(List<Entry> list) {
@@ -65,8 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         return showList.size();
     }
 
-    public void setOnClickListener(OnEntryClickListener listener) {
-        mOnClickListener = listener;
+    public void setListener(EntrySelectedListener listener) {
+        mListener = listener;
     }
 
     public void clearList() {
@@ -84,9 +84,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             mBinding = binding;
         }
 
-        public void bind(Entry entry, OnEntryClickListener onClickListener) {
+        public void bind(Entry entry, EntrySelectedListener onClickListener) {
             mBinding.setEntry(entry);
-            mBinding.setListener(onClickListener);
+            mBinding.itemParentLayout.setOnClickListener(v -> {
+                if (entry != null)
+                    onClickListener.onClick(entry);
+            });
         }
 
 

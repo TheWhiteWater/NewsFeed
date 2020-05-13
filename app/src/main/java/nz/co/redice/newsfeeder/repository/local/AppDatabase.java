@@ -15,20 +15,5 @@ import nz.co.redice.newsfeeder.repository.utils.Constants;
 
 @Database(entities = {Entry.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-
-    private static AppDatabase instance;
-
-    public abstract EntryDao mEntryDao();
-
-
-    public static AppDatabase getInstance (Application application) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(application, AppDatabase.class, Constants.DATABASE)
-                    .fallbackToDestructiveMigration()
-                    .build();
-        }
-        return instance;
-    }
-
-
+    public abstract EntryDao getDao();
 }

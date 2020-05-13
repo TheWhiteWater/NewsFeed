@@ -20,10 +20,6 @@
         android:name="nz.co.redice.newsfeeder.view.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
-        <argument
-            android:name="uuid"
-            app:argType="integer"
-            android:defaultValue="-1" />
         <action
             android:id="@+id/listFragment"
             app:destination="@id/listFragment" />

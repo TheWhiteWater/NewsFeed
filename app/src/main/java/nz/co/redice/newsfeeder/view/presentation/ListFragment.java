@@ -1,7 +1,7 @@
 package nz.co.redice.newsfeeder.view.presentation;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +14,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
+
 import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
+import nz.co.redice.newsfeeder.repository.di.ViewModelFactory;
+import nz.co.redice.newsfeeder.repository.di.base.MyApplication;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
+import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
-public class ListFragment extends Fragment implements OnEntryClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ListFragment extends Fragment implements EntrySelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
+    @Inject ViewModelFactory mViewModelFactory;
     private FragmentListBinding mBinding;
     private ListViewModel mViewModel;
     private RecyclerAdapter mRecyclerAdapter;
@@ -33,6 +39,11 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
         return fragment;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MyApplication.getAppComponent(context).inject(this);
+    }
 
     public ListFragment(Category category) {
         mCategory = category;
@@ -41,7 +52,7 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ListViewModel.class);
+        mViewModel = new ViewModelProvider(this, mViewModelFactory).get(ListViewModel.class);
     }
 
     @Override
@@ -52,7 +63,7 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
 
         this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mRecyclerAdapter = new RecyclerAdapter();
-        mRecyclerAdapter.setOnClickListener(this);
+        mRecyclerAdapter.setListener(this);
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
 
         mBinding.refreshLayout.setOnRefreshListener(this);
@@ -77,15 +88,6 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
 
 
     @Override
-    public void onClick(int uuid) {
-        Log.d("App", "onClick: " + mCategory.toString());
-        ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
-        action.setUuid(uuid);
-        action.setCategory(mCategory.toString());
-        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
-    }
-
-    @Override
     public void onRefresh() {
         mRecyclerAdapter.clearList();
         getCategoryList(mCategory.getTag());
@@ -96,5 +98,14 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
         mViewModel.getEntryList(category).observe(getViewLifecycleOwner(), newList -> {
             mRecyclerAdapter.updateShowList(newList);
         });
+    }
+
+    @Override
+    public void onClick(Entry entry) {
+        DetailViewModel detailViewModel = new ViewModelProvider(getActivity(), mViewModelFactory).get(DetailViewModel.class);
+        detailViewModel.setSelectedRepo(entry);
+        ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
+        action.setCategory(mCategory.toString());
+        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
     }
 }

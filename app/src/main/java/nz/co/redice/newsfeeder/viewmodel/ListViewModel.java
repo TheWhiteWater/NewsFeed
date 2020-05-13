@@ -1,27 +1,27 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nz.co.redice.newsfeeder.repository.Repository;
+import nz.co.redice.newsfeeder.repository.di.ViewModelFactory;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
 
-public class ListViewModel extends AndroidViewModel {
+public class ListViewModel extends ViewModel {
 
-    private final Repository mRepository;
+    private Repository mRepository;
 
-    public ListViewModel(@NonNull Application application) {
-        super(application);
-        mRepository = Repository.getInstance(getApplication());
+    @Inject
+    public ListViewModel(Repository repository) {
+        mRepository = repository;
     }
 
     public void fetchCategory(String category) {

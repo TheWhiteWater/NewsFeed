@@ -9,9 +9,6 @@
             name="entry"
             type="nz.co.redice.newsfeeder.repository.local.dao.Entry" />
 
-        <variable
-            name="listener"
-            type="nz.co.redice.newsfeeder.view.presentation.OnEntryClickListener" />
     </data>
 
 
@@ -23,13 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            app:cardCornerRadius="5dp"
-            android:elevation="4dp">
+            android:elevation="4dp"
+            app:cardCornerRadius="5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/item_parent_layout"
+                android:background="?selectableItemBackground"
                 android:layout_width="match_parent"
-                android:onClick="@{()->listener.onClick(entry.uuid)}"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -47,11 +44,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:justificationMode="inter_word"
+                    android:padding="8dp"
                     android:text="@{entry.title}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/headline_text_size"
                     android:textStyle="bold"
-                    android:padding="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/image"
                     tools:text="Ksdjhg klsdfj ksdjflk jksd  lksdjflk z,mxxnc,mn lksjdflk klsdjf kldsj fkl dl kfj lskd f kj" />
 
@@ -61,8 +58,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="@{entry.publishedAgo}"
                     android:padding="2dp"
+                    android:text="@{entry.publishedAgo}"
                     android:textColor="@color/accent"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/image"

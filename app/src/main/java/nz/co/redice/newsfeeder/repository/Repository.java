@@ -1,43 +1,36 @@
 package nz.co.redice.newsfeeder.repository;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import nz.co.redice.newsfeeder.repository.local.AppDatabase;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 import nz.co.redice.newsfeeder.repository.local.dao.EntryDao;
 import nz.co.redice.newsfeeder.repository.remote.NewsService;
-import nz.co.redice.newsfeeder.repository.remote.RetrofitFactory;
 import nz.co.redice.newsfeeder.repository.remote.model.Article;
 import nz.co.redice.newsfeeder.repository.utils.Constants;
-import nz.co.redice.newsfeeder.view.presentation.Category;
 
+@Singleton
 public class Repository {
-    private static Repository instance;
-    private static NewsService mNewsService;
-    private static EntryDao mDao;
 
-    private Repository(Application application) {
-        mDao = AppDatabase.getInstance(application).mEntryDao();
-        mNewsService = RetrofitFactory.create();
+    private final NewsService mNewsService;
+    private final EntryDao mDao;
+
+    @Inject
+    Repository(NewsService service, EntryDao entryDao) {
+        mDao = entryDao;
+        mNewsService = service;
         Completable.fromAction(mDao::deleteAllEntries)
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }
-
-    public static Repository getInstance(Application application) {
-        if (instance == null)
-            instance = new Repository(application);
-        return instance;
-    }
-
 
     public void requestCategory(String category) {
         mNewsService.requestByCategory(Constants.COUNTRY, Constants.API_KEY, category)
@@ -55,8 +48,12 @@ public class Repository {
         return mDao.getAllEntries(category);
     }
 
-    public LiveData<Entry> retrieveEntryById(int uuid) {
-        return mDao.getEntry(uuid);
+    public Entry retrieveEntryById(int uuid) {
+        return (Entry) mDao.getEntry(uuid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
 
     }
 
