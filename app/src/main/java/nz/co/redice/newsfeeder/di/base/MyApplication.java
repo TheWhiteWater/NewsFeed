@@ -18,7 +18,6 @@ public class MyApplication extends Application {
 
         mComponent = DaggerAppComponent.builder()
                 .databaseModule(new DatabaseModule(this))
-                .networkModule(new NetworkModule())
                 .build();
 
     }

@@ -12,11 +12,13 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import nz.co.redice.newsfeeder.repository.Repository;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
+import nz.co.redice.newsfeeder.view.presentation.Category;
 
 
 public class ListViewModel extends ViewModel {
 
     private Repository mRepository;
+    private String mCategoryTag;
 
     @Inject
     public ListViewModel(Repository repository) {
@@ -24,6 +26,7 @@ public class ListViewModel extends ViewModel {
     }
 
     public void fetchCategory(String category) {
+        mCategoryTag = category;
         Observable.interval(0, 5, TimeUnit.MINUTES)
                 .subscribeOn(Schedulers.io())
                 .subscribe(s -> mRepository.requestCategory(category));

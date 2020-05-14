@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
 import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
@@ -35,7 +36,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     public void updateShowList(List<Entry> list) {
         if (showList.size() > 0) {
             showList.clear();
-            notifyDataSetChanged();
         }
         for (Entry e : list) {
             add(e);
@@ -51,13 +51,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
 
     private void add(Entry newItem) {
-        for (Entry stockItem : showList) {
-            if (stockItem.title.equals(newItem.title)) {
-                return;
-            }
-        }
-        this.showList.add(newItem);
-        notifyItemInserted(showList.size() - 1);
+        Observable.just(showList)
+                .flatMap(Observable::fromIterable)
+                .filter(s -> s.equals(newItem))
+                .toList()
+                .subscribe(s -> {
+                    if (s.size() < 1) {
+                        showList.add(newItem);
+                        notifyItemInserted(showList.size() - 1);
+                    }
+                });
+
     }
 
     @Override

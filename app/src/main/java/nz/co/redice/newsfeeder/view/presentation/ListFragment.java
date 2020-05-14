@@ -65,7 +65,7 @@ public class ListFragment extends Fragment implements EntrySelectedListener, Swi
         mRecyclerAdapter = new RecyclerAdapter();
         mRecyclerAdapter.setListener(this);
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
-
+        mViewModel.fetchCategory(mCategory.getTag());
         mBinding.refreshLayout.setOnRefreshListener(this);
         mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
         return view;
@@ -74,9 +74,7 @@ public class ListFragment extends Fragment implements EntrySelectedListener, Swi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel.fetchCategory(mCategory.getTag());
         getCategoryList(mCategory.getTag());
-
     }
 
 

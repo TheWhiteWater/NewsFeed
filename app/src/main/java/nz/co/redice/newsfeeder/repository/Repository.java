@@ -53,8 +53,6 @@ public class Repository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
-
     }
 
     public void clearDatabase() {
