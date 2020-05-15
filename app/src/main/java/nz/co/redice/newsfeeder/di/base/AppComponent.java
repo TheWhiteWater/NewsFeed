@@ -9,6 +9,7 @@ import nz.co.redice.newsfeeder.di.modules.DatabaseModule;
 import nz.co.redice.newsfeeder.di.modules.NetworkModule;
 import nz.co.redice.newsfeeder.di.modules.ViewModelModule;
 import nz.co.redice.newsfeeder.view.DetailFragment;
+import nz.co.redice.newsfeeder.view.SearchFragment;
 import nz.co.redice.newsfeeder.view.presentation.ListFragment;
 
 @Singleton
@@ -25,4 +26,6 @@ public interface AppComponent {
     void inject(ListFragment listFragment);
 
     void inject(DetailFragment detailFragment);
+
+    void inject(SearchFragment searchFragment);
 }

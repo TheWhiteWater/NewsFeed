@@ -8,7 +8,7 @@ public enum Category {
         @NonNull
         @Override
         public String toString() {
-            return "Top Headlines";
+            return "Top News";
         }
         public String getTag() {return "";}
     },

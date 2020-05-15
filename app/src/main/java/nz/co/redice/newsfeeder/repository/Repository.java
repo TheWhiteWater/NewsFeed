@@ -1,5 +1,7 @@
 package nz.co.redice.newsfeeder.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -44,6 +46,18 @@ public class Repository {
                 }).subscribe(s -> mDao.insertEntry(s));
     }
 
+    public void requestByKeyword(String keyword) {
+        mNewsService.requestByKeyword(Constants.API_KEY, keyword)
+                .subscribeOn(Schedulers.io())
+                .toObservable()
+                .flatMap(s -> Observable.fromIterable(s.getArticles()))
+                .map(Article::toEntry)
+                .map(s -> {
+                    s.setCategory(keyword);
+                    return s;
+                }).subscribe(s -> mDao.insertEntry(s));
+    }
+
     public LiveData<List<Entry>> retrieveByCategory(String category) {
         return mDao.getAllEntries(category);
     }
@@ -59,5 +73,9 @@ public class Repository {
         Completable.fromAction(mDao::deleteAllEntries)
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public NewsService getNewsService() {
+        return mNewsService;
     }
 }

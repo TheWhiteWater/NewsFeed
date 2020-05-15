@@ -1,6 +1,9 @@
 package nz.co.redice.newsfeeder.repository.remote;
 
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import nz.co.redice.newsfeeder.repository.remote.model.Headlines;
 import retrofit2.http.GET;
@@ -23,6 +26,12 @@ public interface NewsService {
             @Query("country") String country,
             @Query("apiKey") String apiKey,
             @Query("category") String category);
+
+    @GET("top-headlines")
+    Single<Headlines> requestByKeyword(
+//            @Query("country") String country,
+            @Query("apiKey") String apiKey,
+            @Query("q") String category);
 
 
 }

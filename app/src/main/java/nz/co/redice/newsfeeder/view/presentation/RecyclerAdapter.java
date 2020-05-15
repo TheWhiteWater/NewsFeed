@@ -58,10 +58,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
                 .subscribe(s -> {
                     if (s.size() < 1) {
                         showList.add(newItem);
-                        notifyItemInserted(showList.size() - 1);
+//                        notifyItemInserted(showList.size() - 1);
                     }
                 });
-
     }
 
     @Override

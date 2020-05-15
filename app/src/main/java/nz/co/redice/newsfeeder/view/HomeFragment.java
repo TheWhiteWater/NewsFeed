@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -18,7 +20,7 @@ import nz.co.redice.newsfeeder.repository.utils.Constants;
 import nz.co.redice.newsfeeder.view.presentation.PagerAdapter;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FragmentHomeBinding mBinding;
     private PagerAdapter mPagerAdapter;
@@ -31,6 +33,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = mBinding.getRoot();
+        mBinding.fab.setOnClickListener(this);
 
         return view;
     }
@@ -53,5 +56,11 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mBinding = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        NavDirections action = HomeFragmentDirections.homeFragmentToSearchFragment();
+        Navigation.findNavController(v).navigate(action);
     }
 }

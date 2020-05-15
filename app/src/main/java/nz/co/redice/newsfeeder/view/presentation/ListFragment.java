@@ -14,6 +14,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import nz.co.redice.newsfeeder.R;
@@ -53,21 +55,15 @@ public class ListFragment extends Fragment implements EntrySelectedListener, Swi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this, mViewModelFactory).get(ListViewModel.class);
+        mViewModel.fetchCategory(mCategory.getTag());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentListBinding.inflate(inflater, container, false);
-        View view = this.mBinding.getRoot();
-
-        this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mRecyclerAdapter = new RecyclerAdapter();
-        mRecyclerAdapter.setListener(this);
-        this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
-        mViewModel.fetchCategory(mCategory.getTag());
-        mBinding.refreshLayout.setOnRefreshListener(this);
-        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
+        View view = setViewBinding(inflater, container);
+        setRecyclerView();
+        setRefreshLayout();
         return view;
     }
 
@@ -77,13 +73,31 @@ public class ListFragment extends Fragment implements EntrySelectedListener, Swi
         getCategoryList(mCategory.getTag());
     }
 
+    @NotNull
+    private View setViewBinding(LayoutInflater inflater, ViewGroup container) {
+        mBinding = FragmentListBinding.inflate(inflater, container, false);
+        View view = this.mBinding.getRoot();
+        return view;
+    }
+
+    private void setRefreshLayout() {
+        mBinding.refreshLayout.setOnRefreshListener(this);
+        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
+    }
+
+    private void setRecyclerView() {
+        this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mRecyclerAdapter = new RecyclerAdapter();
+        mRecyclerAdapter.setListener(this);
+        this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mBinding = null;
     }
-
 
     @Override
     public void onRefresh() {

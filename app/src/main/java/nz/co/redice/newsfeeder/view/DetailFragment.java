@@ -1,6 +1,7 @@
 package nz.co.redice.newsfeeder.view;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import javax.inject.Inject;
 
+import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentDetailBinding;
 import nz.co.redice.newsfeeder.di.modules.ViewModelFactory;
 import nz.co.redice.newsfeeder.di.base.MyApplication;
@@ -92,6 +94,7 @@ public class DetailFragment extends Fragment {
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(mBinding.toolbar, navController, appBarConfiguration);
+        mBinding.toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.icons), PorterDuff.Mode.SRC_ATOP);
     }
 
     private void displayScreen() {
