@@ -1,65 +1,52 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
 import android.app.Application;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.Room;
+import androidx.lifecycle.ViewModel;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
+
+import nz.co.redice.newsfeeder.repository.Repository;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
-import nz.co.redice.newsfeeder.repository.local.AppDatabase;
 
-public class DetailViewModel extends AndroidViewModel {
-
-    private MutableLiveData<Entry> entry = new MutableLiveData<>();
-    private MutableLiveData<Boolean> error = new MutableLiveData<>();
-    private MutableLiveData<Boolean> loading = new MutableLiveData<>();
+public class DetailViewModel extends ViewModel {
 
 
-    private AppDatabase db = Room.databaseBuilder(getApplication(),
-            AppDatabase.class, "news_api.db").build();
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
+    private final MutableLiveData<Entry> selectedEntry = new MutableLiveData<>();
 
 
-    public MutableLiveData<Entry> getEntry() {
-        return entry;
+
+    private Repository mRepository;
+
+    public LiveData<Entry> getSelectedEntry() {
+        return selectedEntry;
     }
 
-    public MutableLiveData<Boolean> getError() {
-        return error;
-    }
-
-    public MutableLiveData<Boolean> getLoading() {
-        return loading;
-    }
-
-    public DetailViewModel(@NonNull Application application) {
-        super(application);
+    public void setSelectedRepo(Entry entry) {
+        selectedEntry.setValue(entry);
     }
 
 
-    public void loadEntryFromDatabase(int uuid) {
-        mDisposable.add((db.mEntryDao().getEntry(uuid))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> setLifeData(s)));
+    @Inject
+    public DetailViewModel(Repository repository) {
+        mRepository = repository;
     }
 
-
-    private void setLifeData(Entry s) {
-        entry.setValue(s);
-        error.setValue(false);
-        loading.setValue(false);
+    public void restoreEntry(Bundle savedInstanceState) {
+        if (selectedEntry.getValue() == null) {
+            int uuid = savedInstanceState.getInt("entry_uuid");
+            setSelectedRepo(mRepository.retrieveEntryById(uuid));
+        }
     }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mDisposable.dispose();
-    }
+    public void saveToBundle(Bundle outState) {
+        if (selectedEntry != null) {
+            outState.putInt("entry_uuid", selectedEntry.getValue().getUuid());
+        }
 
+    }
 }

@@ -2,16 +2,16 @@ package nz.co.redice.newsfeeder.repository.utils;
 
 public class TextFormatter {
 
-//
-//    public static String getSourceTag(String source) {
-//        if (source.contains(".co.nz")) {
-//            String[] subs = source.split(".co.nz");
-//            source = subs[0];
-//        }
-//        return source;
-//    }
 
-    public static String cutOfSourceName(String title, String tag) {
+    public static String getSourceTag(String source) {
+        if (source.contains(".")) {
+            String[] subs = source.split("\\.");
+            source = subs[0];
+        }
+        return source;
+    }
+
+    public static String cutOfSourceName(String title) {
 
         StringBuilder sb = new StringBuilder();
 

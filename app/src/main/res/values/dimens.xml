@@ -3,5 +3,6 @@
     <dimen name="item_image_height">140dp</dimen>
     <dimen name="detail_image_height">240dp</dimen>
     <dimen name="details_headline_size">20sp</dimen>
-    <dimen name="headline">18sp</dimen>
+    <dimen name="headline_text_size">16sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
 </resources>

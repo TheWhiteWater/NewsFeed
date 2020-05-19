@@ -1,5 +1,7 @@
 package nz.co.redice.newsfeeder.view;
 
+import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,40 +18,54 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import javax.inject.Inject;
+
+import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentDetailBinding;
+import nz.co.redice.newsfeeder.di.modules.ViewModelFactory;
+import nz.co.redice.newsfeeder.di.base.MyApplication;
 import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 
 public class DetailFragment extends Fragment {
 
+    @Inject ViewModelFactory mViewModelFactory;
     private FragmentDetailBinding mBinding;
     private DetailViewModel mViewModel;
-    private int uuid;
     private String mCategory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         mBinding = FragmentDetailBinding.inflate(inflater, container, false);
-
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MyApplication.getAppComponent(context).inject(this);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(DetailViewModel.class);
-
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mViewModel = new ViewModelProvider(getActivity(), mViewModelFactory).get(DetailViewModel.class);
+        mViewModel.restoreEntry(savedInstanceState);
 
         setToolbar(view);
-        fetchScreen();
+        displayScreen();
         setCollapsingTitle();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mViewModel.saveToBundle(outState);
     }
 
     private void setCollapsingTitle() {
@@ -65,7 +81,7 @@ public class DetailFragment extends Fragment {
                 if (scrollRange + verticalOffset == 0) {
                     mBinding.collapsingToolbar.setTitle(mCategory);
                     isShow = true;
-                } else if(isShow) {
+                } else if (isShow) {
                     mBinding.collapsingToolbar.setTitle(" ");//careful there should a space between double quote otherwise it wont work
                     isShow = false;
                 }
@@ -78,13 +94,12 @@ public class DetailFragment extends Fragment {
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupWithNavController(mBinding.toolbar, navController, appBarConfiguration);
+        mBinding.toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.icons), PorterDuff.Mode.SRC_ATOP);
     }
 
-    private void fetchScreen() {
-        uuid = DetailFragmentArgs.fromBundle(getArguments()).getUuid();
+    private void displayScreen() {
         mCategory = DetailFragmentArgs.fromBundle(getArguments()).getCategory();
-        mViewModel.loadEntryFromDatabase(uuid);
-        mViewModel.getEntry().observe(getViewLifecycleOwner(),
+        mViewModel.getSelectedEntry().observe(getViewLifecycleOwner(),
                 s -> mBinding.setEntry(s));
     }
 

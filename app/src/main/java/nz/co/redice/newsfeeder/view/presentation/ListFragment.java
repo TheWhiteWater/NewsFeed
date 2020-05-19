@@ -1,7 +1,7 @@
 package nz.co.redice.newsfeeder.view.presentation;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +14,22 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+
 import nz.co.redice.newsfeeder.R;
 import nz.co.redice.newsfeeder.databinding.FragmentListBinding;
+import nz.co.redice.newsfeeder.di.modules.ViewModelFactory;
+import nz.co.redice.newsfeeder.di.base.MyApplication;
+import nz.co.redice.newsfeeder.repository.local.dao.Entry;
+import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 import nz.co.redice.newsfeeder.viewmodel.ListViewModel;
 
 
-public class ListFragment extends Fragment implements OnEntryClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ListFragment extends Fragment implements EntrySelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
+    @Inject ViewModelFactory mViewModelFactory;
     private FragmentListBinding mBinding;
     private ListViewModel mViewModel;
     private RecyclerAdapter mRecyclerAdapter;
@@ -32,6 +41,11 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
         return fragment;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MyApplication.getAppComponent(context).inject(this);
+    }
 
     public ListFragment(Category category) {
         mCategory = category;
@@ -40,43 +54,42 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ListViewModel.class);
+        mViewModel = new ViewModelProvider(this, mViewModelFactory).get(ListViewModel.class);
+        mViewModel.fetchCategory(mCategory.getTag());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentListBinding.inflate(inflater, container, false);
-        View view = this.mBinding.getRoot();
-
-        this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mRecyclerAdapter = new RecyclerAdapter();
-        mRecyclerAdapter.setOnClickListener(this);
-        this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
-
-        mBinding.refreshLayout.setOnRefreshListener(this);
-        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
+        View view = setViewBinding(inflater, container);
+        setRecyclerView();
+        setRefreshLayout();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getCategoryList(mCategory.getTag());
+    }
 
-        mViewModel.fetchCategory(mCategory.getTag());
+    @NotNull
+    private View setViewBinding(LayoutInflater inflater, ViewGroup container) {
+        mBinding = FragmentListBinding.inflate(inflater, container, false);
+        View view = this.mBinding.getRoot();
+        return view;
+    }
 
-        mViewModel.getEntry().observe(getViewLifecycleOwner(), showEntry -> {
-            mRecyclerAdapter.updateShowList(showEntry);
-            this.mBinding.errorTextView.setVisibility(View.INVISIBLE);
-            this.mBinding.progressbar.setVisibility(View.INVISIBLE);
-        });
-        mViewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
-            this.mBinding.progressbar.setVisibility(loading ? View.VISIBLE : View.GONE);
-            this.mBinding.errorTextView.setVisibility(loading ? View.GONE : View.INVISIBLE);
-            this.mBinding.recyclerview.setVisibility(loading ? View.GONE : View.VISIBLE);
-        });
-        mViewModel.getError().observe(getViewLifecycleOwner(),
-                error -> mBinding.errorTextView.setVisibility(error ? View.VISIBLE : View.GONE));
+    private void setRefreshLayout() {
+        mBinding.refreshLayout.setOnRefreshListener(this);
+        mBinding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent));
+    }
+
+    private void setRecyclerView() {
+        this.mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mRecyclerAdapter = new RecyclerAdapter();
+        mRecyclerAdapter.setListener(this);
+        this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
     }
 
 
@@ -86,20 +99,25 @@ public class ListFragment extends Fragment implements OnEntryClickListener, Swip
         mBinding = null;
     }
 
-
-    @Override
-    public void onClick(int uuid) {
-        ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
-        action.setUuid(uuid);
-        action.setCategory(mCategory.toString());
-        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
-    }
-
     @Override
     public void onRefresh() {
         mRecyclerAdapter.clearList();
-        mViewModel.clearDatabase();
-        mViewModel.fetchCategory(mCategory.getTag());
+        getCategoryList(mCategory.getTag());
         mBinding.refreshLayout.setRefreshing(false);
+    }
+
+    private void getCategoryList(String category) {
+        mViewModel.getEntryList(category).observe(getViewLifecycleOwner(), newList -> {
+            mRecyclerAdapter.updateShowList(newList);
+        });
+    }
+
+    @Override
+    public void onClick(Entry entry) {
+        DetailViewModel detailViewModel = new ViewModelProvider(getActivity(), mViewModelFactory).get(DetailViewModel.class);
+        detailViewModel.setSelectedRepo(entry);
+        ListFragmentDirections.DetailFragment action = ListFragmentDirections.detailFragment();
+        action.setCategory(mCategory.toString());
+        Navigation.findNavController(mBinding.refreshLayout).navigate(action);
     }
 }

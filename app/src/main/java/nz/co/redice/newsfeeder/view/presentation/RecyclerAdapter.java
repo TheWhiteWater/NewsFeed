@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
 import nz.co.redice.newsfeeder.databinding.RecyclerItemBinding;
 import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 
@@ -17,7 +18,7 @@ import nz.co.redice.newsfeeder.repository.local.dao.Entry;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
     private List<Entry> showList = new ArrayList<>();
-    private OnEntryClickListener mOnClickListener;
+    private EntrySelectedListener mListener;
 
     @NonNull
     @Override
@@ -29,12 +30,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(showList.get(position), mOnClickListener);
+        holder.bind(showList.get(position), mListener);
     }
 
-    public void updateShowList(Entry entry) {
-        add(entry);
+    public void updateShowList(List<Entry> list) {
+        if (showList.size() > 0) {
+            showList.clear();
+        }
+        for (Entry e : list) {
+            add(e);
+        }
         sortByDate();
+        notifyDataSetChanged();
     }
 
     private void sortByDate() {
@@ -44,14 +51,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
 
     private void add(Entry newItem) {
-
-        for (Entry stockItem : showList) {
-            if (stockItem.title.equals(newItem.title)) {
-                return;
-            }
-        }
-        this.showList.add(newItem);
-        notifyItemInserted(showList.size() - 1);
+        Observable.just(showList)
+                .flatMap(Observable::fromIterable)
+                .filter(s -> s.equals(newItem))
+                .toList()
+                .subscribe(s -> {
+                    if (s.size() < 1) {
+                        showList.add(newItem);
+//                        notifyItemInserted(showList.size() - 1);
+                    }
+                });
     }
 
     @Override
@@ -59,8 +68,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
         return showList.size();
     }
 
-    public void setOnClickListener(OnEntryClickListener listener) {
-        mOnClickListener = listener;
+    public void setListener(EntrySelectedListener listener) {
+        mListener = listener;
     }
 
     public void clearList() {
@@ -78,9 +87,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
             mBinding = binding;
         }
 
-        public void bind(Entry entry, OnEntryClickListener onClickListener) {
+        public void bind(Entry entry, EntrySelectedListener onClickListener) {
             mBinding.setEntry(entry);
-            mBinding.setListener(onClickListener);
+            mBinding.itemParentLayout.setOnClickListener(v -> {
+                if (entry != null)
+                    onClickListener.onClick(entry);
+            });
         }
 
 
