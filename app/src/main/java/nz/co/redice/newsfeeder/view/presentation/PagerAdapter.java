@@ -22,11 +22,6 @@ public class PagerAdapter extends FragmentStateAdapter {
         mTabs.addAll(list);
     }
 
-//    public PagerAdapter(@NonNull FragmentManager fm, int behavior, List<Category> tabs) {
-//        super(fm, behavior);
-//        mTabs = tabs;
-//    }
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -38,14 +33,4 @@ public class PagerAdapter extends FragmentStateAdapter {
         return mTabs.size();
     }
 
-//    @NonNull
-//    @Override
-//    public Fragment getItem(int position) {
-//        return ListFragment.newInstance(mTabs.get(position));
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return mTabs.size();
-//    }
 }
