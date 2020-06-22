@@ -19,4 +19,5 @@ public class Constants {
             Category.TECHNOLOGY);
 
     public static final String DATABASE = "appDatabase";
+
 }

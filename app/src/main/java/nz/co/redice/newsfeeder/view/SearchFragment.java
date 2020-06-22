@@ -2,10 +2,10 @@ package nz.co.redice.newsfeeder.view;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +35,7 @@ import nz.co.redice.newsfeeder.view.presentation.RecyclerAdapter;
 import nz.co.redice.newsfeeder.viewmodel.DetailViewModel;
 import nz.co.redice.newsfeeder.viewmodel.SearchViewModel;
 
-public class SearchFragment extends Fragment implements EntrySelectedListener {
+public class SearchFragment extends Fragment implements EntrySelectedListener, View.OnClickListener {
 
     @Inject ViewModelFactory mViewModelFactory;
     private FragmentSearchBinding mBinding;
@@ -53,6 +53,7 @@ public class SearchFragment extends Fragment implements EntrySelectedListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this, mViewModelFactory).get(SearchViewModel.class);
+
     }
 
 
@@ -62,6 +63,13 @@ public class SearchFragment extends Fragment implements EntrySelectedListener {
         View view = setViewBinding(inflater, container);
         setRecyclerView();
 
+        autoSearch();
+
+        mBinding.searchButton.setOnClickListener(this);
+        return view;
+    }
+
+    private void autoSearch() {
         RxTextView.textChanges(mBinding.editText)
                 .subscribeOn(Schedulers.io())
                 .filter(text -> text.length() >= 3)
@@ -70,12 +78,9 @@ public class SearchFragment extends Fragment implements EntrySelectedListener {
                     mViewModel.fetchByKeyword(s.toString());
                     updateSearchResults(s.toString());
                 });
-
-        return view;
     }
 
     private void updateSearchResults(String keyword) {
-
         Observable.just(mViewModel.getEntryList(keyword))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> s.observe(getViewLifecycleOwner(), newList ->
@@ -106,4 +111,9 @@ public class SearchFragment extends Fragment implements EntrySelectedListener {
         this.mBinding.recyclerview.setAdapter(mRecyclerAdapter);
     }
 
+
+    @Override
+    public void onClick(View v) {
+       autoSearch();
+    }
 }
