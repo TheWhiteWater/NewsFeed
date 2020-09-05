@@ -82,7 +82,7 @@ public class DetailFragment extends Fragment {
                     mBinding.collapsingToolbar.setTitle(mCategory);
                     isShow = true;
                 } else if (isShow) {
-                    mBinding.collapsingToolbar.setTitle(" ");//careful there should a space between double quote otherwise it wont work
+                    mBinding.collapsingToolbar.setTitle(" ");// <- there should a space between double quote otherwise it wont work
                     isShow = false;
                 }
             }

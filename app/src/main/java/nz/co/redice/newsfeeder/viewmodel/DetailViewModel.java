@@ -1,9 +1,7 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
-import android.app.Application;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,8 +17,12 @@ public class DetailViewModel extends ViewModel {
     private final MutableLiveData<Entry> selectedEntry = new MutableLiveData<>();
 
 
-
     private Repository mRepository;
+
+    @Inject
+    public DetailViewModel(Repository repository) {
+        mRepository = repository;
+    }
 
     public LiveData<Entry> getSelectedEntry() {
         return selectedEntry;
@@ -28,12 +30,6 @@ public class DetailViewModel extends ViewModel {
 
     public void setSelectedRepo(Entry entry) {
         selectedEntry.setValue(entry);
-    }
-
-
-    @Inject
-    public DetailViewModel(Repository repository) {
-        mRepository = repository;
     }
 
     public void restoreEntry(Bundle savedInstanceState) {

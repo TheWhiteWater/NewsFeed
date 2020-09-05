@@ -1,5 +1,7 @@
 package nz.co.redice.newsfeeder.viewmodel;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -24,6 +26,7 @@ public class ListViewModel extends ViewModel {
         mRepository = repository;
     }
 
+    @SuppressLint("CheckResult")
     public void fetchCategory(String category) {
         Observable.interval(0, 5, TimeUnit.MINUTES)
                 .subscribeOn(Schedulers.io())

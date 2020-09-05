@@ -1,5 +1,6 @@
 package nz.co.redice.newsfeeder.view.presentation;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -50,6 +51,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     }
 
 
+    @SuppressLint("CheckResult")
     private void add(Entry newItem) {
         Observable.just(showList)
                 .flatMap(Observable::fromIterable)
@@ -58,7 +60,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
                 .subscribe(s -> {
                     if (s.size() < 1) {
                         showList.add(newItem);
-//                        notifyItemInserted(showList.size() - 1);
                     }
                 });
     }

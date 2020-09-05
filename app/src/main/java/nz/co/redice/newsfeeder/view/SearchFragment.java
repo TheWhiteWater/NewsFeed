@@ -1,11 +1,11 @@
 package nz.co.redice.newsfeeder.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,6 +69,7 @@ public class SearchFragment extends Fragment implements EntrySelectedListener, V
         return view;
     }
 
+    @SuppressLint("CheckResult")
     private void autoSearch() {
         RxTextView.textChanges(mBinding.editText)
                 .subscribeOn(Schedulers.io())
@@ -80,6 +81,7 @@ public class SearchFragment extends Fragment implements EntrySelectedListener, V
                 });
     }
 
+    @SuppressLint("CheckResult")
     private void updateSearchResults(String keyword) {
         Observable.just(mViewModel.getEntryList(keyword))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,6 +116,6 @@ public class SearchFragment extends Fragment implements EntrySelectedListener, V
 
     @Override
     public void onClick(View v) {
-       autoSearch();
+        autoSearch();
     }
 }
