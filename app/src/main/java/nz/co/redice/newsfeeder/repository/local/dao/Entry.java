@@ -22,19 +22,7 @@ public class Entry {
     @PrimaryKey
     private int uuid;
 
-//    @Ignore
-//    public Entry(int uuid, String source, Object author, String title, String description,
-//                 String url, String urlToImage, String publishedAt, String content) {
-//        this.uuid = uuid;
-//        this.source = TextFormatter.getSourceTag(source);
-//        this.author = author != null ? author.toString() : "";
-//        this.title = TextFormatter.cutOfSourceName(title, source);
-//        this.description = description;
-//        this.url = url;
-//        this.urlToImage = urlToImage;
-//        this.publishedAt = DateFormatter.convertStringToLong(publishedAt);
-//        this.content = content;
-//    }
+
 
 
     public Entry() {

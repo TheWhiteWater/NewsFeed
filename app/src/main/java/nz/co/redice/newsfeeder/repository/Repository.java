@@ -1,5 +1,6 @@
 package nz.co.redice.newsfeeder.repository;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -34,6 +35,7 @@ public class Repository {
                 .subscribe();
     }
 
+    @SuppressLint("CheckResult")
     public void requestCategory(String category) {
         mNewsService.requestByCategory(Constants.COUNTRY, Constants.API_KEY, category)
                 .subscribeOn(Schedulers.io())
@@ -46,6 +48,7 @@ public class Repository {
                 }).subscribe(s -> mDao.insertEntry(s));
     }
 
+    @SuppressLint("CheckResult")
     public void requestByKeyword(String keyword) {
         mNewsService.requestByKeyword(Constants.API_KEY, keyword)
                 .subscribeOn(Schedulers.io())
@@ -75,7 +78,4 @@ public class Repository {
                 .subscribe();
     }
 
-    public NewsService getNewsService() {
-        return mNewsService;
-    }
 }

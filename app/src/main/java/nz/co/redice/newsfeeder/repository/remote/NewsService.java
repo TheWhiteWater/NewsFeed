@@ -29,7 +29,6 @@ public interface NewsService {
 
     @GET("top-headlines")
     Single<Headlines> requestByKeyword(
-//            @Query("country") String country,
             @Query("apiKey") String apiKey,
             @Query("q") String category);
 

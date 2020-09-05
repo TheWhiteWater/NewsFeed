@@ -24,7 +24,6 @@ public class MyApplication extends Application {
 
 
     public static AppComponent getAppComponent(Context context) {
-
         return ((MyApplication) context.getApplicationContext()).mComponent;
     }
 }
